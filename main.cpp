@@ -24,10 +24,10 @@ static void listdomains(std::vector<Domain>& domains) {
   }
 };
 
-int main(){
-    
-    Structure s = Structure("5cw9.cif");
-    std::vector<Domain> domains;
+int main(int argc, char *argv[]){
+  std::string filename=argv[1];
+  Structure s = Structure(filename);
+  std::vector<Domain> domains;
 
     std::vector<Atom> ca = s.getRepresentativeAtomArray();
 
