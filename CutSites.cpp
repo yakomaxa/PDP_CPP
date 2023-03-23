@@ -3,12 +3,12 @@
 #include <iostream>
 
 // Default constructor
-CutSites::CutSites() : ncuts(0) {
- //std::fill_n(cut_sites, PDPParameters::MAX_CUTS, 0);
+CutSites::CutSites() : cut_sites(PDPParameters::MAX_CUTS){
+  this->ncuts=0;
 }
 
-CutSites::CutSites(CutSites const &cs){
- //std::fill_n(cut_sites, PDPParameters::MAX_CUTS, 0);
+CutSites::CutSites(CutSites const &cs): cut_sites(PDPParameters::MAX_CUTS){
+  this->ncuts=0;
 }
 
 // Destructor
@@ -36,16 +36,16 @@ std::vector<int> CutSites::getCutSites() {
 }
 
 void CutSites::addCutSites(int index, int site){
-    this->cut_sites[index] += site;
+    this->cut_sites[index] = site;
 };
 
 
 // Setter for cut_sites
-/*
-void CutSites::setCutSites(int cut_sites[]) {
-    std::copy(cut_sites, cut_sites + PDPParameters::MAX_CUTS, this->cut_sites);
+
+void CutSites::setCutSites(std::vector<int> cut_sites) {
+   this->cut_sites = cut_sites;    
 }
-*/
+
 
 // toString method
 std::string CutSites::toString() {

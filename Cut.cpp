@@ -12,7 +12,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
              PDPDistanceMatrix pdpMatrix){
     
         int nclose = pdpMatrix.getNclose();
-
+	printf("nclose %i\n",nclose);
         std::vector<int> iclose = pdpMatrix.getIclose();
         std::vector<int> jclose = pdpMatrix.getJclose();
     

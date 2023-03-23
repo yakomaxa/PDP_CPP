@@ -26,14 +26,15 @@ static void listdomains(std::vector<Domain>& domains) {
 
 int main(){
     
-    Structure s = Structure("./5cw9.cif");
+    Structure s = Structure("5cw9.cif");
     std::vector<Domain> domains;
 
     std::vector<Atom> ca = s.getRepresentativeAtomArray();
 
     GetDistanceMatrix distMaxCalculator;
+    printf("A\n");
     PDPDistanceMatrix pdpMatrix = distMaxCalculator.getDistanceMatrix(ca);
-
+    printf("B\n");
     Domain dom;
     //Chain c = ca[0].getGroup().getChain();
     //dom.setId("D"+c.getStructure().getPDBCode()+c.getId()+"1");
@@ -42,20 +43,27 @@ int main(){
     dom.setNseg(1);
     dom.getSegmentAtPos(0).setFrom(0);
     dom.getSegmentAtPos(0).setTo(int(ca.size())-1);
-
-    CutSites cutSites;
-
+    printf("C\n");
+    CutSites* cutSites = new CutSites();
+    
+    printf("%i\n",cutSites->cut_sites.size());
     // Do the initial splitting
     CutDomain cutDomain(ca,pdpMatrix);
-    cutDomain.cutDomain(dom, cutSites, pdpMatrix);
+    printf("D\n");
+    cutDomain.cutDomain(dom, *cutSites, pdpMatrix);
+
+    printf("E\n");
     domains =  cutDomain.getDomains();
+    printf("F\n");
     listdomains(domains);
+    printf("G\n");
     // Cluster domains
     domains = ClusterDomains::cluster(domains, pdpMatrix);
+    printf("H\n");
     listdomains(domains);
     // Remove short segments
     ShortSegmentRemover::cleanup(domains);
-
+    printf("FINAL!!\n");
     listdomains(domains);
 
     return 0;
