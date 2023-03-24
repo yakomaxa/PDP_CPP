@@ -32,4 +32,3 @@ std::ostream& operator<<(std::ostream& os, const Segment& segment) {
     os << "Segment [from=" << segment.from_ << ", to=" << segment.to_ << ", score=" << segment.score_ << "]";
     return os;
 }
-

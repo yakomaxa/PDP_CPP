@@ -69,4 +69,3 @@ double Domain::getScore() const {
 void Domain::setScore(double score) {
     this->score = score;
 }
-

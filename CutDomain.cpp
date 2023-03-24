@@ -25,26 +25,26 @@ void CutDomain::cutDomain(Domain dom, CutSites cut_sites, PDPDistanceMatrix pdpM
     Cut cut = Cut();
     
     site = cut.cut(ca, dom, val, dist, pdpMatrix);
-    printf("site %i \n",site)   ;
+    //printf("site %i \n",site)   ;
     if (site < 0) {
-        printf("site<0\n");
+        //printf("site<0\n");
         domains.push_back(dom);
         dom.setScore(val.s_min);
         ndom++;
         return;
     }
     
-    printf("Ndomain=%i\n",domains.size());
-    printf("Ndomain=%i\n",(int)domains.size());
+    //printf("Ndomain=%i\n",domains.size());
+    //printf("Ndomain=%i\n",(int)domains.size());
 //cut_sites.cut_sites[cut_sites.ncuts++] = site;
 //cut_sites.cut_sites[cut_sites.ncuts++] = site;
     cut_sites.addNcuts(1);
     //cut_sites.setNcuts(cut_sites.getNcuts(),site);
-    printf("Line0001\n");
-    printf("getNcuts%i\n",cut_sites.getNcuts());
-    printf("sizesize=%i",cut_sites.cut_sites.size());
+    //printf("Line0001\n");
+    //printf("getNcuts%i\n",cut_sites.getNcuts());
+    //printf("sizesize=%i",cut_sites.cut_sites.size());
     cut_sites.cut_sites[cut_sites.getNcuts()]=site;
-    printf("Line0002\n");
+    //printf("Line0002\n");
     dom1.setSize(0);
     dom1.setNseg(0);
     dom2.setSize(0);
