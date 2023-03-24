@@ -84,7 +84,7 @@ std::vector<Domain> ClusterDomains::cluster(
                             PDPDistanceMatrix& pdpDistMatrix){
     
   printf("LINE000001\n");
-    int ndom = (int)domains.size()-1;
+    int ndom = (int)domains.size();
   printf("LINE000002\n");
     int Si = -1;
     int Sj = -1;
