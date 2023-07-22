@@ -111,6 +111,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	      if (from <= i && i <=k ){
 		if (k+1 <= j && j <=to ){
 		  if(abs(i-j)>4){
+		    printf("------------Starting loop13\n");
 		    contacts[k]+=(dist[i][j]);
 		  }
 		}
