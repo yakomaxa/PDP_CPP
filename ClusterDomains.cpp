@@ -89,9 +89,10 @@ std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double
     }
     
     for (int i = 0; i < domains.size(); i++) {
-        if (i == Sj)
+      if (i == Sj){
             continue;
-        newdoms.push_back(domains[i]);
+      }
+      newdoms.push_back(domains[i]);
     }
     
     domains[Sj].setSize(domains[ClusterDomains::ndom - 1].getSize());
@@ -148,9 +149,9 @@ std::vector<Domain> ClusterDomains::cluster(
       for(int j=i+1;j<ClusterDomains::ndom;j++) {
 	d2 = domains.at(j);
 	if (ClusterDomains::isContacting(d1,d2,iclose_raw,jclose_raw,nclose_raw)){
-	  i_can_contact[n_can]=i;
-	  j_can_contact[n_can]=j;
-	  n_can++;
+	    i_can_contact[n_can]=i;
+	    j_can_contact[n_can]=j;	    
+	    n_can++;
 	}
       }
     }
@@ -159,12 +160,20 @@ std::vector<Domain> ClusterDomains::cluster(
     for(int n = 0 ; n < n_can; n++) {
       i = i_can_contact[n];
       j = j_can_contact[n];
+
+      if (i < j){
+
+      }else{
+	int tmp = i;
+	i = j;
+	j = tmp;	
+      }
       d1 = domains.at(i);    
       d2 = domains.at(j);
       total_contacts_list[i + ClusterDomains::ndom*j] =  ClusterDomains::getTotalContacts(domains,pdpDistMatrix,d1,d2);
       std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts_list[i+j*ClusterDomains::ndom] << std::endl;
       if (total_contacts_list[i+ClusterDomains::ndom*j] > 0){
-	  icontacted[n_contact_pair]=i;
+	  icontacted[n_contact_pair]=i;	 
 	  jcontacted[n_contact_pair]=j;
 	  n_contact_pair+=1;
       }
@@ -179,14 +188,6 @@ std::vector<Domain> ClusterDomains::cluster(
       for (int n = 0; n < n_contact_pair; n++){
 	i=icontacted[n];
 	j=jcontacted[n];
-	printf("i j =%i %i\n",i,j);
-	printf("LIne00000XXXXXXXX\n");
-	//Domain d1 = domains.at(i);
-	printf("LIne00000XXXXXXX2\n");
-	//                Domain d2 = domains.at(j);
-	printf("LIne00000XXXXXXX3\n");
-	//                long total_contacts =  ClusterDomains::getTotalContacts(domains,pdpDistMatrix,d1,d2);
-	//                std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts << std::endl;
 	long total_contacts=total_contacts_list[i+ClusterDomains::ndom*j];
 	int size1dom1=domains[i].getSize();
 	int size2dom2=domains[j].getSize();
