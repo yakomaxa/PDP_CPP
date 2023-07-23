@@ -38,10 +38,34 @@ long  ClusterDomains::getTotalContacts(std::vector<Domain>& domains,PDPDistanceM
   for(int k=0; k<i.getNseg(); k++) {
     for(int l=0; l<j.getNseg(); l++) {
       long contacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
-      total_contacts += contacts;
+      total_contacts +=  contacts;
     }
   }
   return total_contacts;
+};
+
+bool  ClusterDomains::isContacting(Domain& i,Domain& j,std::vector<int> &iclose,std::vector<int> &jclose, int nclose){
+  for(int k=0; k<i.getNseg(); k++) {
+    int fromi=i.getSegmentAtPos(k).getFrom();
+    int toi=i.getSegmentAtPos(k).getTo();
+    for(int l=0; l<j.getNseg(); l++) {
+      int fromj=j.getSegmentAtPos(l).getFrom();
+      int toj=j.getSegmentAtPos(l).getTo();
+      for (int n = 0 ; n < nclose ; n++){
+	if (fromi <= iclose[n] && toi >= iclose[n] &&
+	    fromj <= jclose[n] && toj >= jclose[n] 
+	    ){
+	  return true;
+	}
+	if (fromi <= jclose[n] && toi >= jclose[n] &&
+	    fromj <= iclose[n] && toj >= iclose[n] 
+	    ){
+	  return true;
+	}
+      }                  
+    }
+  }
+  return false;
 };
     
 std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double maximum_value) {
@@ -120,21 +144,12 @@ std::vector<Domain> ClusterDomains::cluster(
     printf("%i\n",nclose_raw);
     for(int i=0;i<ClusterDomains::ndom-1;i++) {
       d1 = domains.at(i);
-      int from1=d1.getSegmentAtPos(0).getFrom();
-      int to1=d1.getSegmentAtPos(0).getTo();
       for(int j=i+1;j<ClusterDomains::ndom;j++) {
 	d2 = domains.at(j);
-	int from2=d2.getSegmentAtPos(0).getFrom();
-	int to2=d2.getSegmentAtPos(0).getTo();
-	for (int n =0 ; n < nclose_raw ; n++ ){
-	  if ( (from1 <= iclose_raw[n] && to1 > iclose_raw[n]) && (from2 <= jclose_raw[n] && to2 >= jclose_raw[n]) ||
-	       (from1 <= jclose_raw[n] && to1 > jclose_raw[n]) && (from2 <= iclose_raw[n] && to2 >= iclose_raw[n])){
-	    i_can_contact[n_can] = i;
-	    j_can_contact[n_can] = j;
-	    n_can+=1;
-	    printf("%i %i\n",i,j);
-	    break;
-	  }
+	if (ClusterDomains::isContacting(d1,d2,iclose_raw,jclose_raw,nclose_raw)){
+	  i_can_contact[n_can]=i;
+	  j_can_contact[n_can]=j;
+	  n_can++;
 	}
       }
     }
