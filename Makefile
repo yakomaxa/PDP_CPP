@@ -1,6 +1,6 @@
 #CXX	= /lab/home/ksakuma/work/build_gcc11/gcc-11.3.0/bin/g++-11.3.0
 CXX	= g++-12
-CXXFLAGS  =  -std=c++17 -Wall -I./ 
+CXXFLAGS  =  -std=c++20 -Wall -I./ 
 LIBS    = -lm -lz 
 VPATH   = ./
 SRC     = $(shell ls $(VPATH)/*.cpp)

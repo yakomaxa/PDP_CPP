@@ -28,6 +28,9 @@ public:
     double getScore() const;
     void setScore(double score);
 
+  std::vector<int> getContacted() const;
+    void pushbackContacted(int i);
+    void removeContacted(int i); 
 
 private:
     std::string id;
@@ -35,6 +38,7 @@ private:
     int nseg;
     double score;
     std::vector<Segment> segments;
+    std::vector<int> contacted;
 };
 
 #endif // DOMAIN_HPP
