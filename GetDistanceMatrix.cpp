@@ -34,6 +34,11 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom> protein
     int nclose=0;
     std::vector<int> iclose(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
     std::vector<int> jclose(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
+
+    int nclose_raw=0;
+    std::vector<int> iclose_raw(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
+    std::vector<int> jclose_raw(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
+
     
     if(protein.size() >= PDPParameters::MAXLEN) {
       std::cerr << protein.size() << " protein.len > MAXLEN " << PDPParameters::MAXLEN << std::endl;
@@ -86,6 +91,9 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom> protein
             if(d<dt1) {
                 dist[i][j]=1;
                 dist[j][i]=1;
+		iclose_raw[nclose_raw]=i;
+		jclose_raw[nclose_raw]=j;
+		nclose_raw++;
                 if(d<dt2) {
                     dist[i][j]=2;
                     dist[j][i]=2;
@@ -138,6 +146,12 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom> protein
     std::vector iv = iclose;
     matrix.setIclose(iv);
     matrix.setJclose(jclose);
+
+    matrix.setNclose_raw(nclose_raw);
+    std::vector ivr = iclose_raw;
+    matrix.setIclose_raw(ivr);
+    matrix.setJclose_raw(jclose_raw);
+    
     matrix.setDist(dist);
     return matrix;
 }

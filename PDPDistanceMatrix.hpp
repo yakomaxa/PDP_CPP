@@ -10,7 +10,10 @@ private:
     int nclose;
     std::vector<int> iclose;
     std::vector<int> jclose;
-    
+    int nclose_raw;
+    std::vector<int> iclose_raw;
+    std::vector<int> jclose_raw;
+
 public:
     PDPDistanceMatrix();
     std::vector<std::vector<int>> getDist();
@@ -23,6 +26,15 @@ public:
     void setIclose(std::vector<int> iclose);
     std::vector<int> getJclose();
     void setJclose(std::vector<int> jclose);
+
+
+    int getNclose_raw();
+    void setNclose_raw(int nclose);
+    
+    std::vector<int> getIclose_raw();
+    void setIclose_raw(std::vector<int> iclose_raw);
+    std::vector<int> getJclose_raw();
+    void setJclose_raw(std::vector<int> jclose_raw);
 };
 
 #endif // PDPCORE_PDPDISTANCEMATRIX_H
