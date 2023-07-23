@@ -81,8 +81,23 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 		  }
 		}
 	      }
+
+	      if(from1<= j && j<to1){
+		//printf("-----Starting loop6\n");
+		for(kseg=iseg+1;kseg<dom.getNseg();kseg++) {
+		  from2 = dom.getSegmentAtPos(kseg).getFrom();
+		  to2 = dom.getSegmentAtPos(kseg).getFrom();
+		  //printf("------Starting loop7\n");
+		  if(from2<=i && i<to2){
+		    if(abs(i-j)>4){
+		      contactsd+=(dist[i][j]);
+		    }
+		  }
+		}
+	      }	      
 	    }
 	  }
+	  
 	  from = dom.getSegmentAtPos(iseg).getFrom();
 	  to = dom.getSegmentAtPos(iseg).getTo();
 	  //printf("--------Starting loop8\n");
@@ -108,8 +123,33 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 		  }
 		}
 	      }
+	      
+	      if(from<=j && j<=k){
+		//printf("----------Starting loop10\n");
+		for(kseg=iseg+1;kseg<dom.getNseg();kseg++) {
+		  from2 = dom.getSegmentAtPos(kseg).getFrom();
+		  to2 = dom.getSegmentAtPos(kseg).getTo();
+		  //printf("-----------Starting loop11\n");
+		  if(from2<=i && i<=to2){
+		    //printf("------------Starting loop12\n");
+		    if(abs(i-j)>4){
+		      contacts[k]+=(dist[i][j]);
+		    }
+		  }
+		}
+	      }
+	      
 	      if (from <= i && i <=k ){
 		if (k+1 <= j && j <=to ){
+		  if(abs(i-j)>4){
+		    //printf("------------Starting loop13\n");
+		    contacts[k]+=(dist[i][j]);
+		  }
+		}
+	      }
+
+	      if (from <= j && j <=k ){
+		if (k+1 <= i && i <=to ){
 		  if(abs(i-j)>4){
 		    //printf("------------Starting loop13\n");
 		    contacts[k]+=(dist[i][j]);
@@ -122,6 +162,18 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 		  from2 = dom.getSegmentAtPos(kseg).getFrom();
 		  to2 = dom.getSegmentAtPos(kseg).getTo();
 		  if(from2 <= j && j<=to2){
+		    if(abs(i-j)>4){
+		      contacts[k]+=(dist[j][i]);
+		    }
+		  }
+		}
+	      }
+
+	      if ( k+1 <= j  && j<=to) {
+		for(kseg=0;kseg<iseg;kseg++) {
+		  from2 = dom.getSegmentAtPos(kseg).getFrom();
+		  to2 = dom.getSegmentAtPos(kseg).getTo();
+		  if(from2 <= i && i<=to2){
 		    if(abs(i-j)>4){
 		      contacts[k]+=(dist[j][i]);
 		    }
