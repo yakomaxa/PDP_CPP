@@ -65,6 +65,7 @@ bool  ClusterDomains::isContacting(Domain& i,Domain& j,std::vector<int> &iclose,
       }                  
     }
   }
+  printf("NOCONTACT\n");
   return false;
 };
     
@@ -138,7 +139,7 @@ std::vector<Domain> ClusterDomains::cluster(
     int n_contact_pair=0;
     int i,j;
 
-    int nclose_raw = pdpDistMatrix.getNclose();
+    int nclose_raw = pdpDistMatrix.getNclose_raw();
     std::vector<int> iclose_raw = pdpDistMatrix.getIclose_raw();
     std::vector<int> jclose_raw = pdpDistMatrix.getJclose_raw();
     printf("%i\n",nclose_raw);
