@@ -15,7 +15,13 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	////printf("nclose %i\n",nclose);
         std::vector<int> iclose = pdpMatrix.getIclose();
         std::vector<int> jclose = pdpMatrix.getJclose();
-    
+
+
+	int nclose_raw = pdpMatrix.getNclose_raw();
+	std::vector<int> iclose_raw = pdpMatrix.getIclose_raw();
+        std::vector<int> jclose_raw = pdpMatrix.getJclose_raw();
+
+	
         std::vector<int> contacts(PDPParameters::MAXLEN);
         std::vector<double> max_contacts(PDPParameters::MAXLEN);
         std::vector<double> contact_density(PDPParameters::MAXLEN);
@@ -61,9 +67,9 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	  
 	  //printf("---Starting loop4\n");
 
-	  for (int n = 0; n <= nclose; n++){
-	    i=iclose[n];
-	    j=jclose[n];
+	  for (int n = 0; n <= nclose_raw; n++){
+	    i=iclose_raw[n];
+	    j=jclose_raw[n];
 	    for(jseg=0;jseg<iseg;jseg++) {
 	      from1 = dom.getSegmentAtPos(jseg).getFrom();
 	      to1 = dom.getSegmentAtPos(jseg).getTo();
@@ -106,9 +112,9 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	    size11=size1t+(k-from+1);
 	    size22=size2t+(to-k);
 	    //printf("---------Starting loop9\n");
-	    for (int n = 0; n <= nclose; n++){
-	      i=iclose[n];
-	      j=jclose[n];
+	    for (int n = 0; n <= nclose_raw; n++){
+	      i=iclose_raw[n];
+	      j=jclose_raw[n];
 	      if(from<=i && i<=k){
 		//printf("----------Starting loop10\n");
 		for(kseg=iseg+1;kseg<dom.getNseg();kseg++) {
