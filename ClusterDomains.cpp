@@ -34,14 +34,14 @@ long calc_S(const int a1,
 };
 
 long  ClusterDomains::getTotalContacts(std::vector<Domain>& domains,PDPDistanceMatrix& pdpDistMatrix,Domain& i,Domain& j) {
-            long total_contacts = 0;
-        for(int k=0; k<i.getNseg(); k++) {
-            for(int l=0; l<j.getNseg(); l++) {
-                long contacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
-                total_contacts += contacts;
-            }
-        }
-        return total_contacts;
+  long total_contacts = 0;
+  for(int k=0; k<i.getNseg(); k++) {
+    for(int l=0; l<j.getNseg(); l++) {
+      long contacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
+      total_contacts += contacts;
+    }
+  }
+  return total_contacts;
 };
     
 std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double maximum_value) {
@@ -100,6 +100,18 @@ std::vector<Domain> ClusterDomains::cluster(
     if (ClusterDomains::ndom < 2){
       return domains;
     }
+
+    Domain d1;
+    Domain d2;
+    std::vector<long> total_contacts_list(ndom*ndom);
+    for(int i=0;i<ClusterDomains::ndom-1;i++) {
+      d1 = domains.at(i);
+      for(int j=i+1;j<ClusterDomains::ndom;j++) {
+	d2 = domains.at(j);
+	total_contacts_list[i + ndom*j] =  ClusterDomains::getTotalContacts(domains,pdpDistMatrix,d1,d2);
+	std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts_list[i+j*ndom] << std::endl;
+      }
+    }
     
     printf("CLUSTERDOMAIN::NDOM=%i\n",ClusterDomains::ndom);
     do {
@@ -109,12 +121,13 @@ std::vector<Domain> ClusterDomains::cluster(
             for(int j=i+1;j<ClusterDomains::ndom;j++) {
 	        printf("i j =%i %i\n",i,j);
 	      	printf("LIne00000XXXXXXXX\n");
-                Domain d1 = domains.at(i);
+                //Domain d1 = domains.at(i);
 	      	printf("LIne00000XXXXXXX2\n");
-                Domain d2 = domains.at(j);
+		//                Domain d2 = domains.at(j);
 	      	printf("LIne00000XXXXXXX3\n");
-                long total_contacts =  ClusterDomains::getTotalContacts(domains,pdpDistMatrix,d1,d2);
-                std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts << std::endl;
+		//                long total_contacts =  ClusterDomains::getTotalContacts(domains,pdpDistMatrix,d1,d2);
+		//                std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts << std::endl;
+		long total_contacts=total_contacts_list[i+ndom*j];
                 int size1dom1=domains[i].getSize();
                 int size2dom2=domains[j].getSize();
                 double minDomSize=std::min(size1dom1,size2dom2);
