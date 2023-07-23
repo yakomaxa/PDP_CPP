@@ -192,17 +192,22 @@ std::vector<Domain> ClusterDomains::cluster(
       n_contact_pair+=1;
     }
   }
-  
+
+  std::vector<Domain> olddomains = domains;
   printf("CLUSTERDOMAIN::NDOM=%i\n",ClusterDomains::ndom);
   do {
     printf("DO\n");
     printf("CLUSTERDOMAIN::NDOM=%i\n",ClusterDomains::ndom);
-    //    std::vector<std::vector<int>> contacts;
+    //    std::vector<std::vector<int>> contacts;    
     for(int i=0;i<ClusterDomains::ndom;i++) {
       for (int j : domains[i].getContacted()){
 	if (j==i){
 	  continue;
 	}
+	if (domains[i].getContacted().size()==olddomains[i].getContacted().size()){
+	  continue;
+	}
+	std::vector<Domain> olddomains = domains;
 	long total_contacts = ClusterDomains::getTotalContacts(domains,pdpDistMatrix,domains[i],domains[j]);
 	int size1dom1=domains[i].getSize();
 	int size2dom2=domains[j].getSize();
