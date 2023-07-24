@@ -86,6 +86,8 @@ std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double
     printf("Contact %i\n",k);
     domains[Si].removeContacted(k);
     domains[Si].pushbackContacted(k);
+    domains[k].removeContacted(Si);
+    domains[k].pushbackContacted(Si);
   }
   printf("Hoge03\n")  ;
   domains[Si].addSize(domains[Sj].getSize());
@@ -204,10 +206,10 @@ std::vector<Domain> ClusterDomains::cluster(
 	if (j==i){
 	  continue;
 	}
-	if (domains[i].getContacted().size()==olddomains[i].getContacted().size()){
-	  continue;
-	}
-	std::vector<Domain> olddomains = domains;
+	//	if (domains[i].getContacted().size()==olddomains[i].getContacted().size()){
+	//	  continue;
+	//	}
+	///	std::vector<Domain> olddomains = domains;
 	long total_contacts = ClusterDomains::getTotalContacts(domains,pdpDistMatrix,domains[i],domains[j]);
 	int size1dom1=domains[i].getSize();
 	int size2dom2=domains[j].getSize();
