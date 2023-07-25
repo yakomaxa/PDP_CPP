@@ -164,7 +164,13 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	  printf("  --- after single cut: s_min = %f site_min = %d\n",val.s_min,site_min);
 	}
 		
-	k=0;	
+	k=0;
+
+
+	if ( verbose ){
+	  std::cout << "  --- checking double cuts up to: " <<  nclose << std::endl;
+	}
+	
 	nc=0;
 	for(l=0;l<nclose;l++) {
                 /************ find iseg, jseg ****************/
