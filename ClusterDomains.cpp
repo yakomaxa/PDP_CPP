@@ -191,21 +191,41 @@ std::vector<Domain> ClusterDomains::cluster(
             maximum_value = PDPParameters::CUT_OFF_VALUE1-.1;
             maximum_values = PDPParameters::CUT_OFF_VALUE1S-.1;
             maximum_valuem = PDPParameters::CUT_OFF_VALUE1M-.1;
+
+	    if(verbose) printf(" Listing the domains after combining...\n");
+	    if(verbose) listdomains(domains);
             
         }else if (maximum_valuem > PDPParameters::CUT_OFF_VALUE1M) {
-            domains = combine(domains, Sim, Sjm, maximum_valuem);
-            maximum_value =  PDPParameters::CUT_OFF_VALUE1-.1;
-            maximum_values = PDPParameters::CUT_OFF_VALUE1S-.1;
-            maximum_valuem = PDPParameters::CUT_OFF_VALUE1M-.1;
+
+	  if(verbose) printf(" Criteria 2 matched\n");
+	  if(verbose) printf(" maximum_values = %f\n", maximum_valuem);
+	  if(verbose) printf(" Sim = %d Sjm = %d\n", Sim, Sjm);
+	  
+	  domains = combine(domains, Sim, Sjm, maximum_valuem);
+	  maximum_value =  PDPParameters::CUT_OFF_VALUE1-.1;
+	  maximum_values = PDPParameters::CUT_OFF_VALUE1S-.1;
+	  maximum_valuem = PDPParameters::CUT_OFF_VALUE1M-.1;
+
+
+	  if(verbose) printf(" Listing the domains after combining...\n");
+	  if(verbose) listdomains(domains);
+	  
         }else if (maximum_values > PDPParameters::CUT_OFF_VALUE1S) {
+
+	  if(verbose) printf(" Criteria 3 matched\n");
+	  if(verbose) printf(" maximum_values = %f\n", maximum_values);
+	  if(verbose) printf(" Sis = %d Sjs = %d\n", Sis, Sjs);
             
-            domains = combine(domains, Sis, Sjs, maximum_values);
-            maximum_value = PDPParameters::CUT_OFF_VALUE1-.1;
-            maximum_values = PDPParameters::CUT_OFF_VALUE1S-.1;
-            maximum_valuem = PDPParameters::CUT_OFF_VALUE1M-.1;
-            
+	  domains = combine(domains, Sis, Sjs, maximum_values);
+	  maximum_value = PDPParameters::CUT_OFF_VALUE1-.1;
+	  maximum_values = PDPParameters::CUT_OFF_VALUE1S-.1;
+	  maximum_valuem = PDPParameters::CUT_OFF_VALUE1M-.1;
+	  
+	  if(verbose) printf(" Listing the domains after combining...\n");
+	  if(verbose) listdomains(domains);
+          
         }else {
-            
+	  if(verbose) printf(" Maximum value is less than cut off value. (max:%f)\n", maximum_value);
             maximum_value = -1.0;
             maximum_values = -1.0;
             maximum_valuem = -1.0;
