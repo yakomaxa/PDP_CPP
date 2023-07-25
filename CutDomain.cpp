@@ -61,6 +61,24 @@ void CutDomain::cutDomain(Domain dom, CutSites cut_sites, PDPDistanceMatrix pdpM
                 dom2.getSegmentAtPos(dom2.getNseg()).setFrom(dom.getSegmentAtPos(i).getFrom());
                 dom2.addNseg(1);
                 dom2.addSize(dom.getSegmentAtPos(i).getTo() - dom.getSegmentAtPos(i).getFrom() + 1);
+            } else if (site == dom.getSegmentAtPos(i).getFrom()) {
+                dom2.getSegmentAtPos(dom2.getNseg()).setTo(site-1);
+                dom2.getSegmentAtPos(dom2.getNseg()).setFrom(site-1);
+                dom2.addNseg(1);
+                dom1.getSegmentAtPos(dom1.getNseg()).setTo(site);
+                dom1.getSegmentAtPos(dom1.getNseg()).setFrom(site);
+                dom1.addNseg(1);
+                dom1.addSize(1);
+                dom2.addSize(1);
+            } else if (site == dom.getSegmentAtPos(i).getTo()) {
+                dom1.getSegmentAtPos(dom1.getNseg()).setTo(site);
+                dom1.getSegmentAtPos(dom1.getNseg()).setFrom(site);
+                dom1.addNseg(1);
+                dom2.getSegmentAtPos(dom2.getNseg()).setTo(site+1);
+                dom2.getSegmentAtPos(dom2.getNseg()).setFrom(site+1);
+                dom2.addNseg(1);
+                dom1.addSize(1);
+                dom2.addSize(1);
             } else if (site > dom.getSegmentAtPos(i).getFrom() && site < dom.getSegmentAtPos(i).getTo()) {
                 dom1.getSegmentAtPos(dom1.getNseg()).setTo(site);
                 dom1.getSegmentAtPos(dom1.getNseg()).setFrom(dom.getSegmentAtPos(i).getFrom());

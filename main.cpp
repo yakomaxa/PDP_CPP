@@ -15,12 +15,18 @@ static void listdomains(std::vector<Domain>& domains) {
   int i = -1;
   for (Domain& dom : domains) {
     i++;
-    std::cout << "DOMAIN:" << i << " size:" << dom.getSize() << " " << dom.getScore() << std::endl;
+    std::cout << "select DOMAIN" << i << ", resi ";
     std::vector<Segment>& segments = dom.getSegments();
 
+    int flag=0;
     for (Segment& s : segments) {
-      std::cout << "   Segment: " << s << std::endl;
+      if (flag>0){
+	std::cout << "+" ;
+      }
+      std::cout << s ;
+      flag++;
     }
+    std::cout << ";" << std::endl;
   }
 };
 
