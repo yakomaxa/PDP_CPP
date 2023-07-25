@@ -42,11 +42,18 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
             for (gemmi::Residue& residue : chain.residues) {
                 for (gemmi::Atom &atom : residue.atoms) {
                     std::string elementname = atom.element.name();
-                    if (atom.name == "CA" && elementname == "C"){
-                        Atoms[index].setX(atom.pos.x);
-                        Atoms[index].setY(atom.pos.y);
-                        Atoms[index].setZ(atom.pos.z);
-                        index += 1;
+		    if (atom.name == "CA" && elementname == "C"){
+		      Atoms[index].setX(atom.pos.x);
+		      Atoms[index].setY(atom.pos.y);
+		      Atoms[index].setZ(atom.pos.z);
+		      printf("CA\n");
+		      index += 1;
+                    }
+		    if (atom.name == "CB" && elementname == "C"){
+		      Atoms[index].setX(atom.pos.x);
+		      Atoms[index].setY(atom.pos.y);
+		      Atoms[index].setZ(atom.pos.z);
+		      printf("CB\n");
                     }
                 }
             }
