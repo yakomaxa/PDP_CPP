@@ -81,6 +81,7 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom> protein
             else if(!hasCbeta1&&!hasCbeta2) {
                 float distance = getDistance(ca1, ca2);
                 d += distance * distance;
+		printf("d=%f\n",d);
             }
             
             if(d<dt1) {

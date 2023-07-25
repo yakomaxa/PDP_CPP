@@ -41,6 +41,9 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
         std::vector<Segment> segments = dom.getSegments();
         std::sort(segments.begin(), segments.end(), SegmentComparator());
 
+	for (auto x : segments)
+	  std::cout << x << " " << std::endl;
+
 	if ( verbose){
 	  //	  std::cout << "  ---  Cut.cut " << dom << " " << std::endl;
 	}
@@ -115,7 +118,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 			max_contacts[k] = 9*x*y;
 
 		    };
-                    contact_density[k]=contacts[k]/max_contacts[k];
+                    contact_density[k]=(float)contacts[k]/(float)max_contacts[k];
 		    
                     if(from==0){
 		      endsf = PDPParameters::ENDSEND;
