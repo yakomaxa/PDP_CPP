@@ -5,7 +5,7 @@
 #include "PDPDistanceMatrix.hpp"
 #include "PDPParameters.hpp"
 
-bool verbose = false;
+bool verbose = true;
 
 int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
              std::vector<std::vector<int>> dist,
@@ -40,7 +40,10 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 
         std::vector<Segment> segments = dom.getSegments();
         std::sort(segments.begin(), segments.end(), SegmentComparator());
-    
+
+	if ( verbose){
+	  //	  std::cout << "  ---  Cut.cut " << dom << " " << std::endl;
+	}
         average_density = 0.0;
         size0=0;
         for(iseg=0;iseg<dom.getNseg();iseg++) {
@@ -135,13 +138,29 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
                 };
 	};
 	average_density/=size0;
+
+
+	if(verbose) printf("  --- Trying to cut domain of size %d having %d segments and  average cont_density %f\n\n",0,dom.getNseg(),average_density);
+
+	if ( verbose ){
+	  for(kseg=0;kseg<dom.getNseg();kseg++){
+	    printf("  --- segment %d from %d to %d av density: %f%\n",kseg,dom.getSegmentAtPos(kseg).getFrom(),dom.getSegmentAtPos(kseg).getTo(), average_density);
+	  }
+	}
+	
+	
 	
 	if(val.first_cut) {
 	  val.AD = average_density;
+	  if(verbose) printf("  --- AD=%f%\n", average_density);
 	};
 	val.AD = average_density;
 	
 	val.s_min/=val.AD;
+
+	if(verbose){
+	  printf("  --- after single cut: s_min = %f site_min = %d\n",val.s_min,site_min);
+	}
 		
 	k=0;	
 	nc=0;
