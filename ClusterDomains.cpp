@@ -149,7 +149,11 @@ std::vector<Domain> ClusterDomains::cluster(
 		  total_max_contacts=(long)(minDomSize*maxDomSize*9);
 		}
                 double S_value= total_contacts/(double)total_max_contacts;
-		printf("S_value %f\n,", S_value);
+		if(verbose) {
+		  printf(" size1=%d size2=%d minDomSize=%5.2f maxDomSize=%5.2f total_contacts = %d \n", size1,size2,minDomSize,maxDomSize,total_contacts);
+		  printf(" total_contacts = %d total_max_contacts = %d\n", total_contacts, total_max_contacts);
+		  printf(" maximum_value = %f S_value = %f\n",maximum_value, S_value);
+		}
                 if (S_value  > maximum_value) {
                     maximum_value = S_value;
                     Si = i;
