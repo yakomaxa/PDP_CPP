@@ -76,6 +76,22 @@ std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double
     return newdoms;
 };
 
+static void listdomains(std::vector<Domain>& domains) {
+
+    int i = -1;
+    for (Domain& dom : domains) {
+        i++;
+        std::cout << "DOMAIN:" << i << " size:" << dom.getSize() << " " << dom.getScore() << std::endl;
+        std::vector<Segment>& segments = dom.getSegments();
+
+        for (Segment& s : segments) {
+            std::cout << "   Segment: " << s << std::endl;
+        }
+    }
+};
+
+
+
 
 std::vector<Domain> ClusterDomains::cluster(
                             std::vector<Domain>& domains,
@@ -95,10 +111,16 @@ std::vector<Domain> ClusterDomains::cluster(
     double maximum_values = PDPParameters::CUT_OFF_VALUE1S;
     double maximum_valuem = PDPParameters::CUT_OFF_VALUE1M;
     double maximum_value  = PDPParameters::CUT_OFF_VALUE1;
+
+
+    if(verbose){
+      listdomains(domains);
+    }
     
     if (ClusterDomains::ndom < 2){
       return domains;
     }
+
     
     do {
         for(int i=0;i<ClusterDomains::ndom-1;i++) {
@@ -182,20 +204,5 @@ std::vector<Domain> ClusterDomains::cluster(
         
     } while (maximum_value > 0.0 || maximum_values > 0.0 || maximum_valuem > 0.0);
     return domains;
-};
-
-
-static void listdomains(std::vector<Domain>& domains) {
-
-    int i = -1;
-    for (Domain& dom : domains) {
-        i++;
-        std::cout << "DOMAIN:" << i << " size:" << dom.getSize() << " " << dom.getScore() << std::endl;
-        std::vector<Segment>& segments = dom.getSegments();
-
-        for (Segment& s : segments) {
-            std::cout << "   Segment: " << s << std::endl;
-        }
-    }
 };
 
