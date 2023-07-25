@@ -230,9 +230,11 @@ std::vector<Domain> ClusterDomains::cluster(
             maximum_values = -1.0;
             maximum_valuem = -1.0;
             
-        }
-        
+        }        
     } while (maximum_value > 0.0 || maximum_values > 0.0 || maximum_valuem > 0.0);
+
+    if(verbose) printf(" The domains are:\n");
+    if(verbose) listdomains(domains);
     return domains;
 };
 
