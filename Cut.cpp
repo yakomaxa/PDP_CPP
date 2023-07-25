@@ -140,7 +140,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	average_density/=size0;
 
 
-	if(verbose) printf("  --- Trying to cut domain of size %d having %d segments and  average cont_density %f\n\n",0,dom.getNseg(),average_density);
+	if(verbose) printf("  --- Trying to cut domain of size %d having %d segments and  average cont_density %f\n\n",dom.getSize(),dom.getNseg(),average_density);
 
 	if ( verbose ){
 	  for(kseg=0;kseg<dom.getNseg();kseg++){
