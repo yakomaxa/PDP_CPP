@@ -178,6 +178,12 @@ std::vector<Domain> ClusterDomains::cluster(
                 
             }
         }
+
+	if (verbose) {
+	  std::cout << "Check for combining: " <<  maximum_value  << " 1 :" << PDPParameters::CUT_OFF_VALUE1 << std::endl;
+	  std::cout << "                     " << maximum_valuem << " 1M:" << PDPParameters::CUT_OFF_VALUE1M  << std::endl;
+	  std::cout << "                     " << maximum_values << " 1S:" << PDPParameters::CUT_OFF_VALUE1S << std::endl;
+	}
         
 
         if (maximum_value > PDPParameters::CUT_OFF_VALUE1) {
