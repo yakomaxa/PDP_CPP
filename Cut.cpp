@@ -50,11 +50,13 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
                 contactsd=1;
                 size1t=0;
                 size2t=0;
-                for(jseg=0;jseg<iseg;jseg++)
+                for(jseg=0;jseg<iseg;jseg++){
                     size1t+=(dom.getSegmentAtPos(jseg).getFrom() - dom.getSegmentAtPos(jseg).getFrom() + 1);
+		}
 
-                for(jseg=iseg+1;jseg<dom.getNseg();jseg++)
+                for(jseg=iseg+1;jseg<dom.getNseg();jseg++){
                     size2t+=(dom.getSegmentAtPos(jseg).getTo() - dom.getSegmentAtPos(jseg).getFrom() + 1);
+		}
 
 
                 for(jseg=0;jseg<iseg;jseg++) {
