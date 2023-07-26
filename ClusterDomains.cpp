@@ -68,6 +68,8 @@ int ClusterDomains::isContacting(Domain& i,Domain& j,std::vector<int> iclose,std
       int fromj=j.getSegmentAtPos(l).getFrom();
       int toj=j.getSegmentAtPos(l).getTo();
       //intcontacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
+
+      //      return true;
       for (int n = 0 ; n < nclose ; n++){
 	if (fromi <= iclose[n] && toi >= iclose[n] &&
 	    fromj <= jclose[n] && toj >= jclose[n] 
@@ -89,13 +91,13 @@ int ClusterDomains::isContacting(Domain& i,Domain& j,std::vector<int> iclose,std
   return false;
 };
     
-std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double maximum_value, std::vector<std::vector<int>> contacts) {
+std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double maximum_value, std::vector<std::vector<int>> &contacts) {
   if (verbose){
         std::cout << "  +++  combining domains " << Si << " " << Sj << std::endl;
   }
   for (int i = 0; i < domains[Sj].getNseg(); i++) {
     domains[Si].getSegmentAtPos(domains[Si].getNseg()).setFrom(domains[Sj].getSegmentAtPos(i).getFrom());
-    domains[Si].getSegmentAtPos(domains[Si].getNseg()).setTo(domains[Sj].getSegmentAtPos(i).getTo());    
+    domains[Si].getSegmentAtPos(domains[Si].getNseg()).setTo(domains[Sj].getSegmentAtPos(i).getTo());
     domains[Si].addNseg(1);  
   }
   //printf("Hoge02_2\n")  ;
@@ -104,21 +106,25 @@ std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double
   for (auto i: ClusterDomains::visibleDomains){
     std::cout << "VISIBLE" << i << "UNV" << Sj << std::endl;
   }
-  domains[Si].removeContacted(Sj);
-  domains[Sj].removeContacted(Si);
   for (int k : domains[Sj].getContacted()){
     //printf("Contact %i\n",k);
     domains[Si].removeContacted(k);
     domains[Si].pushbackContacted(k);
     domains[k].removeContacted(Si);
     domains[k].pushbackContacted(Si);
+
     domains[k].removeContacted(Sj);
     domains[Sj].removeContacted(k);
     //    domains[Si].contacts[k] += domains[Sj].contacts[k];
     //    domains[k].contacts[Si] += domains[k].contacts[Sj];
     contacts[Si][k] += contacts[Sj][k];
     contacts[k][Si] += contacts[k][Sj];
+
+    printf("contacts SI_K %i\n",    contacts[Si][k]);
+    printf("contacts K_SI %i\n",    contacts[k][Si]);
   }
+  domains[Si].removeContacted(Sj);
+  domains[Sj].removeContacted(Si);
   //printf("Hoge03\n")  ;
   domains[Si].addSize(domains[Sj].getSize());
 
@@ -198,8 +204,7 @@ std::vector<Domain> ClusterDomains::cluster(
     d2 = domains.at(j);
     int total_contacts=ClusterDomains::getTotalContacts(domains,pdpDistMatrix,domains[i],domains[j]);
     std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts << std::endl;
-    contacts_list[i][j]=total_contacts;
-    contacts_list[j][i]=total_contacts;
+    contacts_list[i][j]=contacts_list[j][i]=total_contacts;
      if (total_contacts > 0){
       domains[i].pushbackContacted(j);
       domains[j].pushbackContacted(i);
@@ -209,7 +214,7 @@ std::vector<Domain> ClusterDomains::cluster(
 
 
   printf("Counting Visible\n");
-  for (int i = 0 ; i < domains.size();i++){
+  for (int i = 0 ; i < domains.size() ;i++){
     ClusterDomains::visibleDomains.push_back(i);
   }
 
@@ -218,11 +223,11 @@ std::vector<Domain> ClusterDomains::cluster(
   //printf("CLUSTERDOMAIN::NDOM=%i\n",ClusterDomains::ndom);
   do {
     printf("DO\n");
-    //printf("CLUSTERDOMAIN::NDOM=%i\n",ClusterDomains::ndom);
+    printf("CLUSTERDOMAIN::NDOM=%i\n",ClusterDomains::ndom);
     //    std::vector<std::vector<int>> contacts;    
     for(int i : ClusterDomains::visibleDomains){
       for (int j : domains[i].getContacted()){
-	//printf("Contacted %i %i \n",i,j);
+	printf("Contacted %i %i \n",i,j);
 	if (j==i){
 	  continue;
 	}
@@ -258,9 +263,9 @@ std::vector<Domain> ClusterDomains::cluster(
 	
 	
       if(verbose) {
-	//printf("size1=%i size2=%i minDomSize=%f maxDomSize=%f total_contacts = %i \n", size1,size2,minDomSize,maxDomSize,total_contacts);
-	//printf(" total_contacts = %i total_max_contacts = %i\n", total_contacts, total_max_contacts);
-	//printf(" maximum_value = %f S_value = %f\n",maximum_value, S_value);
+	printf("size1=%i size2=%i minDomSize=%f maxDomSize=%f total_contacts = %i \n", size1,size2,minDomSize,maxDomSize,total_contacts);
+	printf(" total_contacts = %i total_max_contacts = %i\n", total_contacts, total_max_contacts);
+	printf(" maximum_value = %f S_value = %f\n",maximum_value, S_value);
       }
       
       if (S_value  > maximum_value) {
@@ -321,7 +326,7 @@ std::vector<Domain> ClusterDomains::cluster(
       maximum_valuem = -1.0;
       
     }
-    olddomains = domains;
+    //    olddomains = domains;
   } while (maximum_value > 0.0 || maximum_values > 0.0 || maximum_valuem > 0.0);
 
   std::vector<Domain> newdoms;
