@@ -32,7 +32,7 @@ public:
     void pushbackContacted(int i);
     void removeContacted(int i);
 
-    std::vector<int> contacts;
+  //    std::vector<int> contacts;
 private:
     std::string id;
     int size;
