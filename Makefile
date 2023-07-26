@@ -1,5 +1,5 @@
 CXX	= g++-12
-CXXFLAGS  =  -std=c++17 -Wall -I./  -O0
+CXXFLAGS  =  -std=c++20 -Wall -I./  -O0
 LIBS    = -lm -lz 
 VPATH   = ./
 SRC     = $(shell ls $(VPATH)/*.cpp)

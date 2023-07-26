@@ -69,3 +69,15 @@ double Domain::getScore() const {
 void Domain::setScore(double score) {
     this->score = score;
 }
+
+std::vector<int> Domain::getContacted() const{
+  return contacted;
+}
+
+void Domain::pushbackContacted(int i){
+  contacted.push_back(i);
+};
+
+void Domain::removeContacted(int i){
+  std::erase(contacted,i);
+}
