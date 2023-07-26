@@ -60,7 +60,7 @@ int ClusterDomains::getTotalContacts(std::vector<Domain>& domains,PDPDistanceMat
   return total_contacts;
 };
 
-int ClusterDomains::isContacting(Domain& i,Domain& j,std::vector<int> iclose,std::vector<int> jclose, int nclose) {
+int ClusterDomains::isContacting(Domain& i,Domain& j,const std::vector<int>& iclose, const std::vector<int>& jclose, int nclose) {
   for(int k=0; k<i.getNseg(); k++) {
     int fromi=i.getSegmentAtPos(k).getFrom();
     int toi=i.getSegmentAtPos(k).getTo();
@@ -129,7 +129,7 @@ std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double
   domains[Si].addSize(domains[Sj].getSize());
 
   
-  return domains;
+  return std::move(domains);
 };
 
 
@@ -228,7 +228,7 @@ std::vector<Domain> ClusterDomains::cluster(
     for(int i : ClusterDomains::visibleDomains){
       for (int j : domains[i].getContacted()){
 	printf("Contacted %i %i \n",i,j);
-	if (j==i){
+	if (j<=i){
 	  continue;
 	}
 	//printf("LIne00001\n");

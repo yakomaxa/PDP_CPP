@@ -3,14 +3,14 @@
 bool CutDomain::verbose = true;
 int ndom;
 
-CutDomain::CutDomain(std::vector<Atom> ca, PDPDistanceMatrix pdpMatrix){
+CutDomain::CutDomain(std::vector<Atom> &ca, PDPDistanceMatrix &pdpMatrix){
     dist = pdpMatrix.getDist();
     this->ca = ca;
     ndom = 0;
     domains = std::vector<Domain>();
 }
 
-void CutDomain::cutDomain(Domain dom, CutSites cut_sites, PDPDistanceMatrix pdpMatrix) {
+void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& pdpMatrix) {
  
     int i, site;
     

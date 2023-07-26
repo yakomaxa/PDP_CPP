@@ -23,7 +23,7 @@ float getDistance(Atom atom1,Atom atom2){
 }
 
 
-PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom> protein)
+PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protein)
 {
     
     
