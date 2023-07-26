@@ -91,12 +91,15 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
             if(d<dt1) {
                 dist[i][j]=1;
                 dist[j][i]=1;
+
 		iclose_raw[nclose_raw]=i;
 		jclose_raw[nclose_raw]=j;
 		nclose_raw++;
+		
                 if(d<dt2) {
                     dist[i][j]=2;
                     dist[j][i]=2;
+		    
                     if(j-i>35) {
                         iclose[nclose]=i;
                         jclose[nclose]=j;

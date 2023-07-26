@@ -228,7 +228,7 @@ std::vector<Domain> ClusterDomains::cluster(
     for(int i : ClusterDomains::visibleDomains){
       for (int j : domains[i].getContacted()){
 	printf("Contacted %i %i \n",i,j);
-	if (j==i){
+	if (j<=i){
 	  continue;
 	}
 	//printf("LIne00001\n");
