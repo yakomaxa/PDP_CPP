@@ -71,13 +71,13 @@ int ClusterDomains::isContacting(Domain& i,Domain& j,const std::vector<int>& icl
 
       //      return true;
       for (int n = 0 ; n < nclose ; n++){
-	if (fromi <= iclose[n] && toi >= iclose[n] &&
-	    fromj <= jclose[n] && toj >= jclose[n] 
+	if (fromi <= iclose[n] && toi > iclose[n] &&
+	    fromj <= jclose[n] && toj > jclose[n] 
 	    ){
 	  return true;
 	}
-	if (fromi <= jclose[n] && toi >= jclose[n] &&
-	    fromj <= iclose[n] && toj >= iclose[n] 
+	if (fromi <= jclose[n] && toi > jclose[n] &&
+	    fromj <= iclose[n] && toj > iclose[n] 
 	    ){
 	  return true;
 	}
@@ -228,7 +228,7 @@ std::vector<Domain> ClusterDomains::cluster(
     for(int i : ClusterDomains::visibleDomains){
       for (int j : domains[i].getContacted()){
 	printf("Contacted %i %i \n",i,j);
-	if (j<=i){
+	if (j==i){
 	  continue;
 	}
 	//printf("LIne00001\n");
@@ -334,7 +334,7 @@ std::vector<Domain> ClusterDomains::cluster(
     newdoms.push_back(domains[i]);
   }
   
-  return newdoms;
+  return std::move(newdoms);
 };
 
 

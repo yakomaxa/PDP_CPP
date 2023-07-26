@@ -49,7 +49,7 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
 	std::sort(segments.begin(), segments.end(), SegmentComparator());
     
         average_density = 0.0;
-        size0=1;
+        size0=0;
 	//printf("Starting loop1\n");
         for(iseg=0;iseg<dom.getNseg();iseg++) {
 	  contactsd=1;
