@@ -31,13 +31,13 @@ static void listdomains(std::vector<Domain>& domains) {
 };
 
 
-long calc_S(const int a1,
+int calc_S(const int a1,
             const int b1,
             const int a2,
             const int b2,
             PDPDistanceMatrix pdpDistMatrix) {
 
-    long contacts = 0;
+    int contacts = 0;
     std::vector<std::vector<int>> dist = pdpDistMatrix.getDist();
 
     for (int i = a1; i <= b1; i++) {
@@ -49,26 +49,26 @@ long calc_S(const int a1,
     return contacts;
 };
 
-long  ClusterDomains::getTotalContacts(std::vector<Domain>& domains,PDPDistanceMatrix& pdpDistMatrix,Domain& i,Domain& j) {
-  long total_contacts = 0;
+int ClusterDomains::getTotalContacts(std::vector<Domain>& domains,PDPDistanceMatrix& pdpDistMatrix,Domain& i,Domain& j) {
+  int total_contacts = 0;
   for(int k=0; k<i.getNseg(); k++) {
     for(int l=0; l<j.getNseg(); l++) {
-      long contacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
+      int contacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
       total_contacts +=  contacts;
     }
   }
   return total_contacts;
 };
 
-long  ClusterDomains::isContacting(std::vector<Domain>& domains,PDPDistanceMatrix& pdpDistMatrix,Domain& i,Domain& j) {
+int ClusterDomains::isContacting(Domain& i,Domain& j,std::vector<int> iclose,std::vector<int> jclose, int nclose) {
   for(int k=0; k<i.getNseg(); k++) {
     int fromi=i.getSegmentAtPos(k).getFrom();
     int toi=i.getSegmentAtPos(k).getTo();
     for(int l=0; l<j.getNseg(); l++) {
       int fromj=j.getSegmentAtPos(l).getFrom();
       int toj=j.getSegmentAtPos(l).getTo();
-      long contacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
-      /**      for (int n = 0 ; n < nclose ; n++){
+      //intcontacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
+      for (int n = 0 ; n < nclose ; n++){
 	if (fromi <= iclose[n] && toi >= iclose[n] &&
 	    fromj <= jclose[n] && toj >= jclose[n] 
 	    ){
@@ -80,17 +80,16 @@ long  ClusterDomains::isContacting(std::vector<Domain>& domains,PDPDistanceMatri
 	  return true;
 	}
       }
-      **/
-      if (contacts>0){
-	return true;
-      }
+      //      if (contacts>0){
+      //	return true;
+      //      }
     }
   }
   //printf("NOCONTACT\n");
   return false;
 };
     
-std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double maximum_value) {
+std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double maximum_value, std::vector<std::vector<int>> contacts) {
   if (verbose){
         std::cout << "  +++  combining domains " << Si << " " << Sj << std::endl;
   }
@@ -118,8 +117,10 @@ std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double
     domains[k].pushbackContacted(Si);
     domains[k].removeContacted(Sj);
     domains[Sj].removeContacted(k);
-    domains[Si].contacts[k] += domains[Sj].contacts[k];
-    domains[k].contacts[Si] += domains[k].contacts[Sj];
+    //    domains[Si].contacts[k] += domains[Sj].contacts[k];
+    //    domains[k].contacts[Si] += domains[k].contacts[Sj];
+    contacts[Si][k] += contacts[Sj][k];
+    contacts[k][Si] += contacts[k][Sj];
   }
   //printf("Hoge03\n")  ;
   domains[Si].addSize(domains[Sj].getSize());
@@ -143,7 +144,7 @@ std::vector<Domain> ClusterDomains::cluster(
   int Sim = -1;
   int Sjm = -1;
   
-  long total_max_contacts = 0;
+  int total_max_contacts = 0;
   
   double maximum_values = PDPParameters::CUT_OFF_VALUE1S;
   double maximum_valuem = PDPParameters::CUT_OFF_VALUE1M;
@@ -155,8 +156,6 @@ std::vector<Domain> ClusterDomains::cluster(
   
   Domain d1;
   Domain d2;
-  std::vector<std::vector<int>> total_contacts_list(ClusterDomains::ndom, std::vector<int>(ClusterDomains::ndom));
-  
   std::vector<int> i_can_contact(ClusterDomains::ndom*ClusterDomains::ndom);
   std::vector<int> j_can_contact(ClusterDomains::ndom*ClusterDomains::ndom);
   int n_can=0;
@@ -170,18 +169,23 @@ std::vector<Domain> ClusterDomains::cluster(
   std::vector<int> iclose_raw = pdpDistMatrix.getIclose_raw();
   std::vector<int> jclose_raw = pdpDistMatrix.getJclose_raw();
   //printf("%i\n",nclose_raw);
+
+  printf("Counting N_CAN\n");
   for(int i=0;i<ClusterDomains::ndom-1;i++) {
     d1 = domains.at(i);
     for(int j=i+1;j<ClusterDomains::ndom;j++) {
       d2 = domains.at(j);
-      if (ClusterDomains::isContacting(domains,pdpDistMatrix,d1,d2)){
+      if (ClusterDomains::isContacting(d1,d2,iclose_raw,jclose_raw,nclose_raw)){
 	i_can_contact[n_can]=i;
 	j_can_contact[n_can]=j;	    
 	n_can++;
       }
     }
   }
-  
+
+
+  printf("Counting N_PAIR\n");
+  std::vector<std::vector<int>> contacts_list((ClusterDomains::ndom), std::vector<int>(ClusterDomains::ndom));
   for(int n = 0 ; n < n_can; n++) {
     i = i_can_contact[n];
     j = j_can_contact[n];
@@ -195,8 +199,10 @@ std::vector<Domain> ClusterDomains::cluster(
     }
     d1 = domains.at(i);    
     d2 = domains.at(j);
-    long total_contacts=ClusterDomains::getTotalContacts(domains,pdpDistMatrix,domains[i],domains[j]);
+    int total_contacts=ClusterDomains::getTotalContacts(domains,pdpDistMatrix,domains[i],domains[j]);
     std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts << std::endl;
+    contacts_list[i][j]=total_contacts;
+    contacts_list[j][i]=total_contacts;
      if (total_contacts > 0){
       domains[i].pushbackContacted(j);
       domains[j].pushbackContacted(i);
@@ -204,22 +210,17 @@ std::vector<Domain> ClusterDomains::cluster(
      }
   }
 
+
+  printf("Counting Visible\n");
   for (int i = 0 ; i < domains.size();i++){
     ClusterDomains::visibleDomains.push_back(i);
   }
 
-  int c;
-  for (int i = 0 ; i < domains.size();i++){
-    for (int j = 0 ; j < domains.size();j++){
-      c = ClusterDomains::getTotalContacts(domains,pdpDistMatrix,domains[i],domains[j]);
-      domains[i].contacts.push_back(c);
-    }
-  }
 
   std::vector<Domain> olddomains = domains;
   //printf("CLUSTERDOMAIN::NDOM=%i\n",ClusterDomains::ndom);
   do {
-    //printf("DO\n");
+    printf("DO\n");
     //printf("CLUSTERDOMAIN::NDOM=%i\n",ClusterDomains::ndom);
     //    std::vector<std::vector<int>> contacts;    
     for(int i : ClusterDomains::visibleDomains){
@@ -229,7 +230,7 @@ std::vector<Domain> ClusterDomains::cluster(
 	  continue;
 	}
 	//printf("LIne00001\n");
-	long total_contacts = domains[i].contacts[j];
+	int total_contacts = contacts_list[i][j];
 	//printf("LIne00002\n");
 	int size1dom1=domains[i].getSize();
 	//printf("LIne00003\n");
@@ -244,14 +245,14 @@ std::vector<Domain> ClusterDomains::cluster(
 	  maxDomSize=2*minDomSize;
 	}
 	//printf("LIne00004\n");
-	long size1= std::min(PDPParameters::MAXSIZE,(int)minDomSize);
-	long size2= std::min(PDPParameters::MAXSIZE,(int)maxDomSize);
+	int size1= std::min(PDPParameters::MAXSIZE,(int)minDomSize);
+	int size2= std::min(PDPParameters::MAXSIZE,(int)maxDomSize);
 	minDomSize=std::min(pow(minDomSize,1.6/3)+PDPParameters::RG1,pow(minDomSize,1.4/3)+pow(PDPParameters::TD1,1.6/3)+PDPParameters::RG1);
 	maxDomSize=std::min(pow(maxDomSize,1.6/3)+PDPParameters::RG1,pow(maxDomSize,1.4/3)+pow(PDPParameters::TD1,1.6/3)+PDPParameters::RG1);
 	
-	total_max_contacts=(long)(minDomSize*maxDomSize*10);
+	total_max_contacts=(int)(minDomSize*maxDomSize*10);
 	if(size1>130){
-	  total_max_contacts=(long)(minDomSize*maxDomSize*9);
+	  total_max_contacts=(int)(minDomSize*maxDomSize*9);
 	}
 	//printf("LIne00006\n");
 	
@@ -295,7 +296,7 @@ std::vector<Domain> ClusterDomains::cluster(
     //printf("LIne00011\n");            
     if (maximum_value > PDPParameters::CUT_OFF_VALUE1) {
       //printf("LIne00012\n");            
-      domains = combine(domains,Si, Sj, maximum_value);
+      domains = combine(domains,Si, Sj, maximum_value,contacts_list);
       //printf("LIne00013\n");            
       maximum_value = PDPParameters::CUT_OFF_VALUE1-.1;
       maximum_values = PDPParameters::CUT_OFF_VALUE1S-.1;
@@ -303,14 +304,14 @@ std::vector<Domain> ClusterDomains::cluster(
       
     }else if (maximum_valuem > PDPParameters::CUT_OFF_VALUE1M) {
       //printf("LIne00014\n");            
-      domains = combine(domains, Sim, Sjm, maximum_valuem);
+      domains = combine(domains, Sim, Sjm, maximum_valuem,contacts_list);
       //printf("LIne00015\n");            
       maximum_value =  PDPParameters::CUT_OFF_VALUE1-.1;
       maximum_values = PDPParameters::CUT_OFF_VALUE1S-.1;
       maximum_valuem = PDPParameters::CUT_OFF_VALUE1M-.1;
     }else if (maximum_values > PDPParameters::CUT_OFF_VALUE1S) {
       //printf("LIne00016\n");            
-      domains = combine(domains, Sis, Sjs, maximum_values);
+      domains = combine(domains, Sis, Sjs, maximum_values,contacts_list);
       //printf("LIne00017\n");            
       maximum_value = PDPParameters::CUT_OFF_VALUE1-.1;
       maximum_values = PDPParameters::CUT_OFF_VALUE1S-.1;
