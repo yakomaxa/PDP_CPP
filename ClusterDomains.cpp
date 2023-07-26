@@ -93,9 +93,6 @@ std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double
   if (verbose){
         std::cout << "  +++  combining domains " << Si << " " << Sj << std::endl;
   }
-  //printf("Hoge01\n")  ;
-  std::vector<Domain> newdoms;
-  //printf("Hoge02\n")  ;
   for (int i = 0; i < domains[Sj].getNseg(); i++) {
     domains[Si].getSegmentAtPos(domains[Si].getNseg()).setFrom(domains[Sj].getSegmentAtPos(i).getFrom());
     domains[Si].getSegmentAtPos(domains[Si].getNseg()).setTo(domains[Sj].getSegmentAtPos(i).getTo());    
@@ -256,7 +253,7 @@ std::vector<Domain> ClusterDomains::cluster(
 	}
 	//printf("LIne00006\n");
 	
-	double S_value= total_contacts/(double)total_max_contacts;
+	double S_value= double(total_contacts)/(double)total_max_contacts;
 	//printf("S_value %f\n,", S_value);
 	
 	
