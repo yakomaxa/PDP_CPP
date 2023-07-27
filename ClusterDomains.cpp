@@ -214,7 +214,7 @@ std::vector<Domain> ClusterDomains::cluster(
 
 
   printf("Counting Visible\n");
-  for (int i = 0 ; i < domains.size() ;i++){
+  for (int i = 0 ; i < (int)domains.size() ;i++){
     ClusterDomains::visibleDomains.push_back(i);
   }
 
@@ -334,7 +334,7 @@ std::vector<Domain> ClusterDomains::cluster(
     newdoms.push_back(domains[i]);
   }
   
-  return std::move(newdoms);
+  return newdoms;
 };
 
 

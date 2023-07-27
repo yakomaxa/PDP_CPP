@@ -40,13 +40,13 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
     std::vector<int> jclose_raw(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
 
     
-    if(protein.size() >= PDPParameters::MAXLEN) {
+    if((int)protein.size() >= PDPParameters::MAXLEN) {
       std::cerr << protein.size() << " protein.len > MAXLEN " << PDPParameters::MAXLEN << std::endl;
         //return 0;
         exit;
     }
-    for(i=0; i < protein.size(); i++) {
-      for(j=i; j < protein.size(); j++) {
+    for(i=0; i < (int)protein.size(); i++) {
+      for(j=i; j < (int)protein.size(); j++) {
             dist[i][j]=0;
             dist[j][i]=0;
             d=0;
@@ -118,31 +118,31 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
         }
     }
     
-    for(int i=1;i<protein.size();i++) {
-        for(int j=i;j<protein.size()-1;j++) {
-            if(dist[i][j]>=2&&j-i>5) {
-                if((dist[i-1][j-1]>=2&&dist[i+1][j+1]>=2)||(dist[i-1][j+1]>=2&&dist [i+1][j-1]>=2))  {
-                    dist[i][j]+=4;
-                    dist[j][i]+=4;
-                }
-                else if(i>2&&j<protein.size()-2) {
-                    if((dist[i-3][j-3]>=1&&dist[i+3][j+3]>=1)||(dist[i-3][j+3]>=1&&dist[i+3][j-3]>=1)) {
-                        dist[i][j]+=4;
-                        dist[j][i]+=4;
-                    }
-                    else if(i>3&&j<protein.size()-3) {
-                        if(((dist[i-3][j-3]>=1||dist[i-3][j-4]>=1||dist[i-4][j-3]>=1||dist[i-4][j-4]>=1)&&
-                            (dist[i+4][j+4]>=1||dist[i+4][j+3]>=1||dist[i+3][j+3]>=1||dist[i+3] [j+4]>=1))
-                           ||((dist[i-4][j+4]>=1||dist[i-4][j+3]>=1||dist[i-3][j+4]>=1||dist[i-3][j+3]>=1)&&
-                              (dist[i+4][j-4]>=1||dist[i+4][j-3]>=1||dist[i+3][j-4]>=1||dist[i+3][j-3]>=1))) {
-                            dist[i][j]+=4;
-                            dist[j][i]+=4;
-                            
-                        }
-                    }
-                }
-            }
-        }
+    for(int i=1;i<(int)protein.size();i++) {
+      for(int j=i;j<(int)protein.size()-1;j++) {
+	if(dist[i][j]>=2&&j-i>5) {
+	  if((dist[i-1][j-1]>=2&&dist[i+1][j+1]>=2)||(dist[i-1][j+1]>=2&&dist [i+1][j-1]>=2))  {
+	    dist[i][j]+=4;
+	    dist[j][i]+=4;
+	  }
+	  else if(i>2&&j<(int)protein.size()-2) {
+	    if((dist[i-3][j-3]>=1&&dist[i+3][j+3]>=1)||(dist[i-3][j+3]>=1&&dist[i+3][j-3]>=1)) {
+	      dist[i][j]+=4;
+	      dist[j][i]+=4;
+	    }
+	    else if(i>3&&j<(int)protein.size()-3) {
+	      if(((dist[i-3][j-3]>=1||dist[i-3][j-4]>=1||dist[i-4][j-3]>=1||dist[i-4][j-4]>=1)&&
+		  (dist[i+4][j+4]>=1||dist[i+4][j+3]>=1||dist[i+3][j+3]>=1||dist[i+3] [j+4]>=1))
+		 ||((dist[i-4][j+4]>=1||dist[i-4][j+3]>=1||dist[i-3][j+4]>=1||dist[i-3][j+3]>=1)&&
+		    (dist[i+4][j-4]>=1||dist[i+4][j-3]>=1||dist[i+3][j-4]>=1||dist[i+3][j-3]>=1))) {
+		dist[i][j]+=4;
+		dist[j][i]+=4;
+                
+	      }
+	    }
+	  }
+	}
+      }
     }
     PDPDistanceMatrix matrix;
     matrix.setNclose(nclose);

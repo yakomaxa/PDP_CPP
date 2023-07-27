@@ -125,7 +125,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 		      endsf = PDPParameters::ENDS;
 		    };
 		    
-                    if(to==ca.size()-1){
+                    if(to==(int)ca.size()-1){
 		      endst = PDPParameters::ENDSEND;
 		    }else{
 		      endst = PDPParameters::ENDS;
@@ -153,7 +153,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 
 	if ( verbose ){
 	  for(kseg=0;kseg<dom.getNseg();kseg++){
-	    printf("  --- segment %d from %d to %d av density: %f%\n",kseg,dom.getSegmentAtPos(kseg).getFrom(),dom.getSegmentAtPos(kseg).getTo(), average_density);
+	    printf("  --- segment %d from %d to %d av density: %f\n",kseg,dom.getSegmentAtPos(kseg).getFrom(),dom.getSegmentAtPos(kseg).getTo(), average_density);
 	  }
 	}
 	
@@ -161,7 +161,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	
 	if(val.first_cut) {
 	  val.AD = average_density;
-	  if(verbose) printf("  --- AD=%f%\n", average_density);
+	  if(verbose) printf("  --- AD=%f\n", average_density);
 	};
 	val.AD = average_density;
 	
@@ -190,7 +190,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
                     }else{
 		      endsf = PDPParameters::ENDS;
 		    };
-                    if(to==ca.size()-1){
+                    if(to==(int)ca.size()-1){
 		      endst = PDPParameters::ENDSEND;
 		    }else{
 		      endst = PDPParameters::ENDS;
