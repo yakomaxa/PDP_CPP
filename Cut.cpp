@@ -212,7 +212,7 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
 	      endsf = PDPParameters::ENDS;
 	    };
 	    
-	    if(to==ca.size()-1){
+	    if(to==(int)ca.size()-1){
 	      endst = PDPParameters::ENDSEND;
 	    }else{
 	      endst = PDPParameters::ENDS;
@@ -254,7 +254,7 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
 	    }else{
 	      endsf = PDPParameters::ENDS;
 	    };
-	    if(to==ca.size()-1){
+	    if(to==(int)ca.size()-1){
 	      endst = PDPParameters::ENDSEND;
 	    }else{
 	      endst = PDPParameters::ENDS;
