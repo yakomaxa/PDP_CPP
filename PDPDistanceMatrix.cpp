@@ -8,7 +8,7 @@ std::vector<std::vector<int>> PDPDistanceMatrix::getDist() {
     return dist;
 }
 
-void PDPDistanceMatrix::setDist(std::vector<std::vector<int>> dist) {
+void PDPDistanceMatrix::setDist(std::vector<std::vector<int>>& dist) {
     this->dist = dist;
 }
 
@@ -24,7 +24,7 @@ std::vector<int> PDPDistanceMatrix::getIclose() {
     return iclose;
 }
 
-void PDPDistanceMatrix::setIclose(std::vector<int> iclose) {
+void PDPDistanceMatrix::setIclose(std::vector<int>& iclose) {
     this->iclose = iclose;
 }
 
@@ -32,7 +32,7 @@ std::vector<int> PDPDistanceMatrix::getJclose() {
     return jclose;
 }
 
-void PDPDistanceMatrix::setJclose(std::vector<int> jclose) {
+void PDPDistanceMatrix::setJclose(std::vector<int>& jclose) {
     this->jclose = jclose;
 }
 
@@ -50,7 +50,7 @@ std::vector<int> PDPDistanceMatrix::getIclose_raw() {
     return iclose_raw;
 }
 
-void PDPDistanceMatrix::setIclose_raw(std::vector<int> iclose_raw) {
+void PDPDistanceMatrix::setIclose_raw(std::vector<int>& iclose_raw) {
     this->iclose_raw = iclose_raw;
 }
 
@@ -58,7 +58,7 @@ std::vector<int> PDPDistanceMatrix::getJclose_raw() {
     return jclose_raw;
 }
 
-void PDPDistanceMatrix::setJclose_raw(std::vector<int> jclose_raw) {
+void PDPDistanceMatrix::setJclose_raw(std::vector<int>& jclose_raw) {
     this->jclose_raw = jclose_raw;
 }
 

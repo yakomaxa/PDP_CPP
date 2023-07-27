@@ -35,7 +35,7 @@ int calc_S(const int a1,
             const int b1,
             const int a2,
             const int b2,
-            PDPDistanceMatrix pdpDistMatrix) {
+            PDPDistanceMatrix & pdpDistMatrix) {
 
     int contacts = 0;
     std::vector<std::vector<int>> dist = pdpDistMatrix.getDist();
@@ -181,7 +181,7 @@ std::vector<Domain> ClusterDomains::cluster(
       if (ClusterDomains::isContacting(d1,d2,iclose_raw,jclose_raw,nclose_raw)){
 	i_can_contact[n_can]=i;
 	j_can_contact[n_can]=j;	    
-	n_can++;
+	n_can++;	
       }
     }
   }
