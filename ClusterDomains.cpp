@@ -16,8 +16,7 @@ ClusterDomains::ClusterDomains(){
     
 }
 
-static void listdomains(std::vector<Domain>& domains) {
-  
+static void listdomains(std::vector<Domain>& domains) {  
   int i = -1;
   for (Domain& dom : domains) {
     i++;
@@ -51,10 +50,18 @@ int calc_S(const int a1,
 
 int ClusterDomains::getTotalContacts(std::vector<Domain>& domains,PDPDistanceMatrix& pdpDistMatrix,Domain& i,Domain& j) {
   int total_contacts = 0;
+  std::vector<std::vector<int>> dist = pdpDistMatrix.getDist();
   for(int k=0; k<i.getNseg(); k++) {
+    int a1=i.getSegmentAtPos(k).getFrom();
+    int b1=i.getSegmentAtPos(k).getTo();      
     for(int l=0; l<j.getNseg(); l++) {
-      int contacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
-      total_contacts +=  contacts;
+      int a2=j.getSegmentAtPos(l).getFrom();
+      int b2=j.getSegmentAtPos(l).getTo();
+      for (int ii = a1; ii <= b1; ii++) {
+        for (int jj = a2; jj <= b2; jj++) {
+	  total_contacts += dist[ii][jj];;
+        }
+      }
     }
   }
   return total_contacts;
@@ -66,10 +73,7 @@ int ClusterDomains::isContacting(Domain& i,Domain& j,const std::vector<int>& icl
     int toi=i.getSegmentAtPos(k).getTo();
     for(int l=0; l<j.getNseg(); l++) {
       int fromj=j.getSegmentAtPos(l).getFrom();
-      int toj=j.getSegmentAtPos(l).getTo();
-      //intcontacts = calc_S( j.getSegmentAtPos(l).getFrom(), j.getSegmentAtPos(l).getTo(), i.getSegmentAtPos(k).getFrom(), i.getSegmentAtPos(k).getTo(), pdpDistMatrix);
-
-      //      return true;
+      int toj=j.getSegmentAtPos(l).getTo();     
       for (int n = 0 ; n < nclose ; n++){
 	if (fromi <= iclose[n] && toi > iclose[n] &&
 	    fromj <= jclose[n] && toj > jclose[n] 
@@ -171,20 +175,35 @@ std::vector<Domain> ClusterDomains::cluster(
 
 
   std::vector<std::vector<int>> contacts_list((ClusterDomains::ndom), std::vector<int>(ClusterDomains::ndom));
+  std::vector<std::vector<int>> dist = pdpDistMatrix.getDist();
+  int tmp=0;
   for(int n = 0 ; n < n_can; n++) {
     i = i_can_contact[n];
     j = j_can_contact[n];
     
-    if (i < j){
-      
-    }else{
-      int tmp = i;
+    if (i >= j){
+      tmp = i;
       i = j;
       j = tmp;	
     }
     d1 = domains.at(i);    
     d2 = domains.at(j);
-    int total_contacts=ClusterDomains::getTotalContacts(domains,pdpDistMatrix,domains[i],domains[j]);
+
+    int total_contacts = 0;
+    for(int k=0; k<d1.getNseg(); k++) {
+      int a1=d1.getSegmentAtPos(k).getFrom();
+      int b1=d1.getSegmentAtPos(k).getTo();      
+      for(int l=0; l<d2.getNseg(); l++) {
+	int a2=d2.getSegmentAtPos(l).getFrom();
+	int b2=d2.getSegmentAtPos(l).getTo();
+	for (int ii = a1; ii <= b1; ii++) {
+	  for (int jj = a2; jj <= b2; jj++) {
+	    total_contacts += dist[ii][jj];;
+	  }
+	}
+      }
+    }
+        
     std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts << std::endl;
     contacts_list[i][j]=contacts_list[j][i]=total_contacts;
      if (total_contacts > 0){

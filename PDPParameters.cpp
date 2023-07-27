@@ -2,7 +2,7 @@
 
 
 const int PDPParameters::MAXSIZE = 350;
-const int PDPParameters::MAXLEN = 3200;
+const int PDPParameters::MAXLEN = 4000;
 const int PDPParameters::MAXDOM = 30;
 const int PDPParameters::MAX_CUTS = 80;
 const int PDPParameters::MIN_DOMAIN_LENGTH = 35;

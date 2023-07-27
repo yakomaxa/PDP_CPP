@@ -8,10 +8,10 @@
 
 float getDistance(Atom atom1,Atom atom2);
 float getDistance(Atom atom1,Atom atom2){
-    float dist;
-    float dx;
-    float dy;
-    float dz;
+    float dist=0;
+    float dx=0;
+    float dy=0;
+    float dz=0;
     
     dx = atom1.getX() - atom2.getX();
     dy = atom1.getY() - atom2.getY();
@@ -26,77 +26,57 @@ float getDistance(Atom atom1,Atom atom2){
 PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protein)
 {
     
-    
-    std::vector<std::vector<int>> dist(PDPParameters::MAXLEN+3,
-                                  std::vector<int>(PDPParameters::MAXLEN+3));
-    int i,j;
-    float d,dt1,dt2,dt3,dt4;
-    int nclose=0;
-    std::vector<int> iclose(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
-    std::vector<int> jclose(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
+  float dx=0;
+  float dy=0;
+  float dz=0;
+  
+  std::vector<std::vector<int>> dist(PDPParameters::MAXLEN+3,
+				     std::vector<int>(PDPParameters::MAXLEN+3));
+  int i,j;
+  float d,dt1,dt2,dt3,dt4;
+  int nclose=0;
+  std::vector<int> iclose(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
+  std::vector<int> jclose(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
+  
+  int nclose_raw=0;
+  std::vector<int> iclose_raw(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
+  std::vector<int> jclose_raw(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
+  
+  
+  if((int)protein.size() >= PDPParameters::MAXLEN) {
+    std::cerr << protein.size() << " protein.len > MAXLEN " << PDPParameters::MAXLEN << std::endl;
+    //return 0;
+    exit;
+  }
+  for(i=0; i < (int)protein.size(); i++) {
+    for(j=i; j < (int)protein.size(); j++) {
+      dist[i][j]=0;
+      dist[j][i]=0;
+      d=0;
+      
+      Atom ca1 = protein.at(i);
+      Atom ca2 = protein.at(j);
+      
+      dt1=81;
+      dt2=64;
+      dt3=49;
+      dt4=36;
+      
 
-    int nclose_raw=0;
-    std::vector<int> iclose_raw(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
-    std::vector<int> jclose_raw(PDPParameters::MAXLEN*PDPParameters::MAXLEN);
-
-    
-    if((int)protein.size() >= PDPParameters::MAXLEN) {
-      std::cerr << protein.size() << " protein.len > MAXLEN " << PDPParameters::MAXLEN << std::endl;
-        //return 0;
-        exit;
-    }
-    for(i=0; i < (int)protein.size(); i++) {
-      for(j=i; j < (int)protein.size(); j++) {
-            dist[i][j]=0;
-            dist[j][i]=0;
-            d=0;
-            
-            Atom ca1 = protein.at(i);
-            Atom ca2 = protein.at(j);
-            //Group g1 = ca1.getGroup();
-            //Group g2 = ca2.getGroup();
-            
-            //Atom* cb1 = getCBeta(g1);
-            //Atom* cb2 = getCBeta(g2);
-            //Atom cb1 = NULL;
-            //Atom cb2 = NULL;
-            //bool hasCbeta1 = cb1 != NULL;
-            //bool hasCbeta2 = cb2 != NULL;
-            bool hasCbeta1=false;
-            bool hasCbeta2=false;
-            
-            dt1=81;
-            dt2=64;
-            dt3=49;
-            dt4=36;
-            
-            if(hasCbeta1 && hasCbeta2) {
-//                float distance = Calc::getDistance(cb1,cb2);
-//                d+= distance*distance;
-            }
-            else if(hasCbeta1 && !hasCbeta2) {
-//                float distance = 999;
-//                distance = Calc::getDistance(cb1, ca2);
-//                d += distance * distance;
-            }
-            else if(!hasCbeta1&&hasCbeta2) {
-//                float distance = Calc::getDistance(ca1, cb2);
-//                d += distance * distance;
-            }
-            else if(!hasCbeta1&&!hasCbeta2) {
-                float distance = getDistance(ca1, ca2);
-                d += distance * distance;
-            }
-            
-            if(d<dt1) {
-                dist[i][j]=1;
-                dist[j][i]=1;
-
-		iclose_raw[nclose_raw]=i;
-		jclose_raw[nclose_raw]=j;
-		nclose_raw++;
-		
-                if(d<dt2) {
+      dx = ca1.getX() - ca2.getX();
+      dy = ca1.getY() - ca2.getY();
+      dz = ca1.getZ() - ca2.getZ();	
+      d = dx*dx + dy*dy + dz*dz;
+      
+      if(d<dt1) {
+	dist[i][j]=1;
+	dist[j][i]=1;
+	
+	iclose_raw[nclose_raw]=i;
+	jclose_raw[nclose_raw]=j;
+	nclose_raw++;
+	
+	if(d<dt2) {
                     dist[i][j]=2;
                     dist[j][i]=2;
 		    
