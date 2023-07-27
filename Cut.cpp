@@ -41,12 +41,12 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
         std::vector<Segment> segments = dom.getSegments();
         std::sort(segments.begin(), segments.end(), SegmentComparator());
 
-	for (auto x : segments)
-	  std::cout << x << " " << std::endl;
+	//	for (auto x : segments)
+	//	  std::cout << x << " " << std::endl;
 
-	if ( verbose){
+	//	if ( verbose){
 	  //	  std::cout << "  ---  Cut.cut " << dom << " " << std::endl;
-	}
+	//	}
         average_density = 0.0;
         size0=0;
         for(iseg=0;iseg<dom.getNseg();iseg++) {
@@ -149,11 +149,11 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	}
 
 
-	if(verbose) printf("  --- Trying to cut domain of size %d having %d segments and  average cont_density %f\n\n",dom.getSize(),dom.getNseg(),average_density);
+	if(verbose) //printf("  --- Trying to cut domain of size %d having %d segments and  average cont_density %f\n\n",dom.getSize(),dom.getNseg(),average_density);
 
 	if ( verbose ){
 	  for(kseg=0;kseg<dom.getNseg();kseg++){
-	    printf("  --- segment %d from %d to %d av density: %f%\n",kseg,dom.getSegmentAtPos(kseg).getFrom(),dom.getSegmentAtPos(kseg).getTo(), average_density);
+	    //printf("  --- segment %d from %d to %d av density: %f%\n",kseg,dom.getSegmentAtPos(kseg).getFrom(),dom.getSegmentAtPos(kseg).getTo(), average_density);
 	  }
 	}
 	
@@ -161,22 +161,24 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	
 	if(val.first_cut) {
 	  val.AD = average_density;
-	  if(verbose) printf("  --- AD=%f%\n", average_density);
+	  //	  if(verbose){
+	    //printf("  --- AD=%f%\n", average_density);
+	  //	  }
 	};
 	val.AD = average_density;
 	
 	val.s_min/=val.AD;
 
-	if(verbose){
-	  printf("  --- after single cut: s_min = %f site_min = %d\n",val.s_min,site_min);
-	}
+	//	if(verbose){
+	  //printf("  --- after single cut: s_min = %f site_min = %d\n",val.s_min,site_min);
+	//	}
 		
 	k=0;
 
 
-	if ( verbose ){
-	  std::cout << "  --- checking double cuts up to: " <<  nclose << std::endl;
-	}
+	//	if ( verbose ){
+	  //	  std::cout << "  --- checking double cuts up to: " <<  nclose << std::endl;
+	//	}
 	
 	nc=0;
 	for(l=0;l<nclose;l++) {
