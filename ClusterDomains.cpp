@@ -334,7 +334,8 @@ std::vector<Domain> ClusterDomains::cluster(
     newdoms.push_back(domains[i]);
   }
   
-  return std::move(newdoms);
+  //return std::move(newdoms);
+  return newdoms;
 };
 
 
