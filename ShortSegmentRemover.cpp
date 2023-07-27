@@ -14,8 +14,8 @@ void ShortSegmentRemover::cleanup(std::vector<Domain>& domains) {
             n += seglen;
         }
 
-	//        if (n < PDPParameters::MIN_DOMAIN_LENGTH || allshort) {
-	if (n < PDPParameters::MIN_DOMAIN_LENGTH ) {
+	if (n < PDPParameters::MIN_DOMAIN_LENGTH || allshort) {
+	  //if (n < PDPParameters::MIN_DOMAIN_LENGTH ) {
             ndom--;
             domains.erase(domains.begin() + j);
             j--;

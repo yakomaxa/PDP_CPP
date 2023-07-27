@@ -7,9 +7,9 @@
 
 bool verbose = true;
 
-int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
-             std::vector<std::vector<int>>& dist,
-             PDPDistanceMatrix& pdpMatrix){
+int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
+             std::vector<std::vector<int>> dist,
+             PDPDistanceMatrix pdpMatrix){
     
         int nclose = pdpMatrix.getNclose();
         std::vector<int> iclose = pdpMatrix.getIclose();
@@ -50,18 +50,16 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
         average_density = 0.0;
         size0=0;
         for(iseg=0;iseg<dom.getNseg();iseg++) {
-                contactsd=0;
+                contactsd=1;
                 size1t=0;
                 size2t=0;
                 for(jseg=0;jseg<iseg;jseg++){
-		  //                    size1t+=(dom.getSegmentAtPos(jseg).getFrom() - dom.getSegmentAtPos(jseg).getFrom() + 1);
 		  size1t+=(dom.getSegmentAtPos(jseg).getTo() - dom.getSegmentAtPos(jseg).getFrom() + 1);
 		}
 
                 for(jseg=iseg+1;jseg<dom.getNseg();jseg++){
-                    size2t+=(dom.getSegmentAtPos(jseg).getTo() - dom.getSegmentAtPos(jseg).getFrom() + 1);
+		  size2t+=(dom.getSegmentAtPos(jseg).getTo() - dom.getSegmentAtPos(jseg).getFrom() + 1);
 		}
-
 
                 for(jseg=0;jseg<iseg;jseg++) {
                     from1 = dom.getSegmentAtPos(jseg).getFrom();
@@ -69,7 +67,7 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
                     for(int i=from1;i<to1;i++) {
                         for(kseg=iseg+1;kseg<dom.getNseg();kseg++) {
                             from2 = dom.getSegmentAtPos(kseg).getFrom();
-                            to2 = dom.getSegmentAtPos(kseg).getFrom();
+                            to2 = dom.getSegmentAtPos(kseg).getTo();
                             for(int j=from2;j<to2;j++)
                                 if(abs(i-j)>4) contactsd+=(dist[i][j]);
                         }
@@ -143,11 +141,11 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
                     }
                 };
 	};
-	if (size0>0){
-	  average_density/=size0;
+
+	if (size0==0){
+	  return site_min;
 	}else{
-	  average_density=0;
-	  return -1;
+	  average_density/=size0;
 	}
 
 
@@ -350,11 +348,6 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
                     nc = PDPParameters::MAXSIZE-1;
             }
             val.first_cut=false;
-
-	    if(verbose){
-	      printf("  --- E ... at the end of cut: s_min %f CUTOFF %f site_min %d *site2 %d\n",
-		     val.s_min,PDPParameters::CUT_OFF_VALUE,site_min,val.site2);
-	    }
             if(val.s_min> PDPParameters::CUT_OFF_VALUE){
 	      return -1;
 	    }

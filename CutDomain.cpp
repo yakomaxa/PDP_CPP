@@ -29,7 +29,7 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
     if (site < 0) {
       //printf("site<0\n");
       dom.setScore(val.s_min);
-      domains.push_back(dom);      
+      domains.push_back(dom);
       ndom++;
       return;
     }
