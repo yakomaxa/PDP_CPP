@@ -54,27 +54,22 @@ int main(int argc, char *argv[]){
   dom.setSize((int)ca.size());
   dom.setNseg(1);
   dom.getSegmentAtPos(0).setFrom(0);
-  dom.getSegmentAtPos(0).setTo(int(ca.size())-1);
-  printf("C\n");
+  dom.getSegmentAtPos(0).setTo(int(ca.size()));
   CutSites* cutSites = new CutSites();
   printf("---------Setting domain info done\n");  
   // Do the initial splitting
   printf("---------Initial splitting\n");  
   CutDomain cutDomain(ca,pdpMatrix);
-  printf("D\n");
   cutDomain.cutDomain(dom, *cutSites, pdpMatrix);
   printf("---------Initial splitting done\n");  
 
 
   domains =  cutDomain.getDomains();
-  printf("F\n");
   listdomains(domains);
-  printf("G\n");
   // Cluster domains
   printf("---------Clustering domains\n");  
   domains = ClusterDomains::cluster(domains, pdpMatrix);
   printf("---------Clustering domains Done\n");  
-  printf("H\n");
   listdomains(domains);
   // Remove short segments
   printf("---------Cleanup \n");  

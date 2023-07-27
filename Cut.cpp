@@ -143,7 +143,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	};
 
 	if (size0==0){
-	  return site_min;
+	  return -1;
 	}else{
 	  average_density/=size0;
 	}
