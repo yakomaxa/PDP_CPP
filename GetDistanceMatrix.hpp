@@ -7,7 +7,7 @@
 
 class GetDistanceMatrix{
 public:
-    PDPDistanceMatrix getDistanceMatrix(std::vector<Atom> protein);
+    PDPDistanceMatrix getDistanceMatrix(std::vector<Atom>& protein);
 };
 
 #endif

@@ -27,8 +27,8 @@ bool Segment::operator>(const Segment& other) const { return other < *this; }
 bool Segment::operator<=(const Segment& other) const { return !(other < *this); }
 bool Segment::operator>=(const Segment& other) const { return !(*this < other); }
 
-// Print the segment
 std::ostream& operator<<(std::ostream& os, const Segment& segment) {
-    os << "Segment [from=" << segment.from_ << ", to=" << segment.to_ << ", score=" << segment.score_ << "]";
-    return os;
+  //os << "Segment [from=" << segment.from_ << ", to=" << segment.to_ << ", score=" << segment.score_ << "]";
+  os <<  segment.from_ + 1 << "-" << segment.to_ + 1;
+  return os;
 }
