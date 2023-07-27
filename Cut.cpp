@@ -8,8 +8,8 @@
 bool verbose = true;
 
 int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
-             std::vector<std::vector<int>> dist,
-             PDPDistanceMatrix pdpMatrix){
+             std::vector<std::vector<int>>& dist,
+             PDPDistanceMatrix& pdpMatrix){
     
         int nclose = pdpMatrix.getNclose();
         std::vector<int> iclose = pdpMatrix.getIclose();
