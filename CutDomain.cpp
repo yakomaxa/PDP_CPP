@@ -141,7 +141,33 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
 	}
       }
     }
+
+    if(verbose){
+      std::cout << "  CUTR dom1 ...  nse" << dom1.getNseg() << std::endl;
+    }
+
+    if ( verbose){
+      for(i=0;i<dom1.getNseg();i++){
+	std::cout << "F ... from %d to %d" << dom1.getSegmentAtPos(i).getFrom() << " "
+		  << dom1.getSegmentAtPos(i).getTo() << std::endl;
+      }
+    }
+       
     cutDomain(dom1, cut_sites, pdpMatrix);
+
+
+    
+    if(verbose){
+      std::cout << "  CUTR dom2 ...  nse" << dom2.getNseg() << std::endl;
+    }
+
+    if ( verbose){
+      for(i=0;i<dom2.getNseg();i++){
+	std::cout << "F ... from %d to %d" << dom2.getSegmentAtPos(i).getFrom() << " " 
+		  << dom2.getSegmentAtPos(i).getTo() << std::endl;
+      }
+    }
+
 
     cutDomain(dom2, cut_sites, pdpMatrix);
 };

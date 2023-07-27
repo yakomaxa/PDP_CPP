@@ -349,6 +349,11 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
                     nc = PDPParameters::MAXSIZE-1;
             }
             val.first_cut=false;
+
+	    if(verbose){
+	      printf("  --- E ... at the end of cut: s_min %f CUTOFF %f site_min %d *site2 %d\n",
+		     val.s_min,PDPParameters::CUT_OFF_VALUE,site_min,val.site2);
+	    }
             if(val.s_min> PDPParameters::CUT_OFF_VALUE){
 	      return -1;
 	    }
