@@ -87,7 +87,7 @@ int ClusterDomains::isContacting(Domain& i,Domain& j,const std::vector<int>& icl
       //      }
     }
   }
-  //printf("NOCONTACT\n");
+  printf("NOCONTACT\n");
   return false;
 };
     

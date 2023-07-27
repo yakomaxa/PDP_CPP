@@ -50,7 +50,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
         average_density = 0.0;
         size0=0;
         for(iseg=0;iseg<dom.getNseg();iseg++) {
-                contactsd=1;
+                contactsd=0;
                 size1t=0;
                 size2t=0;
                 for(jseg=0;jseg<iseg;jseg++){
@@ -146,6 +146,7 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 	  average_density/=size0;
 	}else{
 	  average_density=0;
+	  return -1;
 	}
 
 
