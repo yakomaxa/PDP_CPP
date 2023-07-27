@@ -338,7 +338,9 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
 		  max_contacts[k] = 9*x*y;
 		}
                 contact_density[nc]=contacts[nc]/max_contacts[nc];
-                if((contact_density[nc]/val.AD+PDPParameters::DBL)<val.s_min&&contact_density[nc]/val.AD+PDPParameters::DBL<PDPParameters::CUT_OFF_VALUE2) {
+                if( (contact_density[nc]/val.AD+PDPParameters::DBL)<val.s_min
+		    &&
+		    contact_density[nc]/val.AD+PDPParameters::DBL<PDPParameters::CUT_OFF_VALUE2) {
                     val.s_min = (contact_density[nc]/val.AD)+PDPParameters::DBL;
                     site_min=iclose[l];
                     val.site2=jclose[l];

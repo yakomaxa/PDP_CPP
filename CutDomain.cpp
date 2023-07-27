@@ -131,7 +131,6 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
        
     cutDomain(dom1, cut_sites, pdpMatrix);
 
-
     
     if(verbose){
       std::cout << "  CUTR dom2 ...  nse" << dom2.getNseg() << std::endl;
