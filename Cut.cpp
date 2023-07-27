@@ -7,9 +7,9 @@
 
 bool verbose = true;
 
-int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
-             std::vector<std::vector<int>> dist,
-             PDPDistanceMatrix pdpMatrix){
+int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
+             std::vector<std::vector<int>>& dist,
+             PDPDistanceMatrix& pdpMatrix){
     
         int nclose = pdpMatrix.getNclose();
         std::vector<int> iclose = pdpMatrix.getIclose();
@@ -54,7 +54,8 @@ int Cut::cut(std::vector<Atom> ca,Domain dom,CutValues& val,
                 size1t=0;
                 size2t=0;
                 for(jseg=0;jseg<iseg;jseg++){
-                    size1t+=(dom.getSegmentAtPos(jseg).getFrom() - dom.getSegmentAtPos(jseg).getFrom() + 1);
+		  //                    size1t+=(dom.getSegmentAtPos(jseg).getFrom() - dom.getSegmentAtPos(jseg).getFrom() + 1);
+		  size1t+=(dom.getSegmentAtPos(jseg).getTo() - dom.getSegmentAtPos(jseg).getFrom() + 1);
 		}
 
                 for(jseg=iseg+1;jseg<dom.getNseg();jseg++){

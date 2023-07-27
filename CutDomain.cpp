@@ -25,7 +25,7 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
     Cut cut = Cut();
     
     site = cut.cut(ca, dom, val, dist, pdpMatrix);
-    //printf("site %i \n",site)   ;
+    printf("site %i \n",site)   ;
     if (site < 0) {
       //printf("site<0\n");
       dom.setScore(val.s_min);
@@ -33,8 +33,10 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
       ndom++;
       return;
     }
-    
+
+    printf("CUT_SITE Ncuts= %i\n",    cut_sites.getNcuts());
     cut_sites.addNcuts(1);
+    printf("CUT_SITE Ncuts= %i\n",    cut_sites.getNcuts());
     cut_sites.cut_sites[cut_sites.getNcuts()]=site;
 
     dom1.setSize(0);
