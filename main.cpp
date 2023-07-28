@@ -9,7 +9,7 @@
 #include "ShortSegmentRemover.hpp"
 #include "Domain.hpp"
 #include "PDPParameters.hpp"
-#include "LocalDomainParser.hpp"
+//#include "LocalDomainParser.hpp"
 
 static void listdomains(std::vector<Domain>& domains) {
   int i = -1;
@@ -53,14 +53,28 @@ int main(int argc, char *argv[]){
   dom.setId("testDomain");
   dom.setSize((int)ca.size());
   dom.setNseg(1);
+
+  //  dom.getSegmentAtPos(2).setFrom(472);
   dom.getSegmentAtPos(0).setFrom(0);
   dom.getSegmentAtPos(0).setTo(int(ca.size())-1);
-  CutSites* cutSites = new CutSites();
+  
+  //  dom.getSegmentAtPos(1).setFrom(236);
+  //  dom.getSegmentAtPos(1).setTo(471);
+
+  //  dom.getSegmentAtPos(0).setFrom(0);
+  //  dom.getSegmentAtPos(0).setTo(235);
+  //**/
+
+
+  CutSites cutSites = CutSites();
   printf("---------Setting domain info done\n");  
   // Do the initial splitting
-  printf("---------Initial splitting\n");  
-  CutDomain cutDomain(ca,pdpMatrix);
-  cutDomain.cutDomain(dom, *cutSites, pdpMatrix);
+  printf("---------Initial splitting\n");
+  std::vector<int> init_cutsites;
+  init_cutsites.push_back(236);
+  init_cutsites.push_back(472);
+  CutDomain cutDomain(ca,pdpMatrix,init_cutsites);
+  cutDomain.cutDomain(dom, cutSites, pdpMatrix,init_cutsites);
   printf("---------Initial splitting done\n");  
 
 

@@ -47,6 +47,7 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
 		      Atoms[index].setX(atom.pos.x);
 		      Atoms[index].setY(atom.pos.y);
 		      Atoms[index].setZ(atom.pos.z);
+		      Atoms[index].setChain(chain.name);
                     }
 		    if (atom.name == "CB" && elementname == "C"){
 		      Atoms[index].setX(atom.pos.x);

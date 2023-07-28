@@ -40,3 +40,11 @@ float Atom::getZ(){
     return this->z;
 };
 
+void Atom::setChain(std::string chain){
+    this->chain = chain;
+};
+
+
+std::string Atom::getChain(){
+    return this->chain;
+} ;

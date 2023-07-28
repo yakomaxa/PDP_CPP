@@ -3,14 +3,15 @@
 bool CutDomain::verbose = true;
 int ndom;
 
-CutDomain::CutDomain(std::vector<Atom> &ca, PDPDistanceMatrix &pdpMatrix){
+CutDomain::CutDomain(std::vector<Atom> &ca, PDPDistanceMatrix &pdpMatrix, std::vector<int> &init_cutsites){
     dist = pdpMatrix.getDist();
     this->ca = ca;
     ndom = 0;
     domains = std::vector<Domain>();
+    this->init_cutsites = init_cutsites;
 }
 
-void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& pdpMatrix) {
+void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& pdpMatrix, std::vector<int>& init_cutsites) {
  
     int i, site;
     
@@ -23,8 +24,12 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
     val.first_cut = true;
     
     Cut cut = Cut();
-    
-    site = cut.cut(ca, dom, val, dist, pdpMatrix);
+    if (init_cutsites.size()==0){
+      site = cut.cut(ca, dom, val, dist, pdpMatrix);
+    }else{
+      site = init_cutsites[init_cutsites.size()-1];
+      init_cutsites.erase(init_cutsites.end() - 1);
+    }
     printf("site %i \n",site)   ;
     if (site < 0) {
       //printf("site<0\n");
@@ -38,6 +43,9 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
     cut_sites.addNcuts(1);
     printf("CUT_SITE Ncuts= %i\n",    cut_sites.getNcuts());
     cut_sites.cut_sites[cut_sites.getNcuts()]=site;
+    for (auto a=1; a<cut_sites.getNcuts();a++){
+      printf("HOGE=%i\n",cut_sites.cut_sites[a]);
+    }
 
     dom1.setSize(0);
     dom1.setNseg(0);
@@ -129,7 +137,7 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
       }
     }
        
-    cutDomain(dom1, cut_sites, pdpMatrix);
+    cutDomain(dom1, cut_sites, pdpMatrix,init_cutsites);
 
     
     if(verbose){
@@ -144,7 +152,7 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
     }
 
 
-    cutDomain(dom2, cut_sites, pdpMatrix);
+    cutDomain(dom2, cut_sites, pdpMatrix,init_cutsites);
 };
 
 std::vector<Domain> CutDomain::getDomains(){

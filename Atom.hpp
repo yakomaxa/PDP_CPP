@@ -6,7 +6,8 @@
 
 class Atom {
 private:
-    float x, y, z;
+  float x, y, z;
+  std::string chain;
     
 public:
     Atom();
@@ -17,6 +18,9 @@ public:
     float getX() ;
     float getY() ;
     float getZ() ;
+  
+  void setChain(std::string chain) ;
+    std::string getChain() ;
 };
 
 #endif

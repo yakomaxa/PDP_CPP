@@ -49,9 +49,9 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
   dt4=36;
 
   // counter loop to count loosest contacts 
-  for(i=0; i < (int)protein.size()-1; i++) {
+  for(i=0; i < (int)protein.size(); i++) {
     Atom ca1 = protein.at(i);
-    for(j=i+1; j < (int)protein.size(); j++) {
+    for(j=i; j < (int)protein.size(); j++) {
       Atom ca2 = protein.at(j);          
       dx = ca1.getX() - ca2.getX();
       dy = ca1.getY() - ca2.getY();
@@ -73,28 +73,34 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
   int nclose=0;
 
   // make dist (not distance but contacts although...) matrix
-  for(i=0; i < (int)protein.size()-1; i++) {
+  for(i=0; i < (int)protein.size(); i++) {
+    dist[i][i]=0;       
+  }
+
+  for(i=0; i < (int)protein.size(); i++) {
     Atom ca1 = protein.at(i);
-    for(j=i+1; j < (int)protein.size(); j++) {
+    std::string  chain1 = protein.at(i).getChain();
+    for(j=i; j < (int)protein.size(); j++) {
+      std::string  chain2 = protein.at(j).getChain();
       Atom ca2 = protein.at(j);          
       dx = ca1.getX() - ca2.getX();
       dy = ca1.getY() - ca2.getY();
       dz = ca1.getZ() - ca2.getZ();	
       d = dx*dx + dy*dy + dz*dz;
-
+      
       if(d<dt1){
 	dist[i][j]=1;
 	dist[j][i]=1;
-		           
+
 	iclose_raw[nclose_raw]=i;
 	jclose_raw[nclose_raw]=j;
 	nclose_raw++;
-	
+			
 	if(d<dt2) {
 	  dist[i][j]=2;
 	  dist[j][i]=2;
 	  
-	  if(j-i>35) {
+	  if(j-i>35 || (chain1!=chain2)){
 	    iclose[nclose]=i;
 	    jclose[nclose]=j;
 	    nclose++;
@@ -111,27 +117,42 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
       }
     }
   }
-    
+
   for(int i=1;i<(int)protein.size();i++) {
+    std::string  chain1 = protein.at(i).getChain();
     for(int j=i;j<(int)protein.size()-1;j++) {
-      if(dist[i][j]>=2&&j-i>5) {
-	if((dist[i-1][j-1]>=2&&dist[i+1][j+1]>=2)||(dist[i-1][j+1]>=2&&dist [i+1][j-1]>=2))  {
-	  dist[i][j]+=4;
-	  dist[j][i]+=4;
+      std::string  chain2 = protein.at(j).getChain();
+      if (chain1==chain2){
+	Atom ca1 = protein.at(i);
+	Atom ca2 = protein.at(j);          
+	dx = ca1.getX() - ca2.getX();
+	dy = ca1.getY() - ca2.getY();
+	dz = ca1.getZ() - ca2.getZ();	
+	d = dx*dx + dy*dy + dz*dz;
+	if (d>=dt1){
+	  continue;
 	}
-	else if(i>2&&j<(int)protein.size()-2) {
-	  if((dist[i-3][j-3]>=1&&dist[i+3][j+3]>=1)||(dist[i-3][j+3]>=1&&dist[i+3][j-3]>=1)) {
+	if(dist[i][j]>=2&&j-i>5) {
+	  if((dist[i-1][j-1]>=2&&dist[i+1][j+1]>=2)||(dist[i-1][j+1]>=2&&dist [i+1][j-1]>=2))  {
 	    dist[i][j]+=4;
 	    dist[j][i]+=4;
+	    printf("COND1 I=%i J=%i\n",i,j);
 	  }
-	  else if(i>3&&j<(int)protein.size()-3) {
-	    if(((dist[i-3][j-3]>=1||dist[i-3][j-4]>=1||dist[i-4][j-3]>=1||dist[i-4][j-4]>=1)&&
-		(dist[i+4][j+4]>=1||dist[i+4][j+3]>=1||dist[i+3][j+3]>=1||dist[i+3] [j+4]>=1))
-	       ||((dist[i-4][j+4]>=1||dist[i-4][j+3]>=1||dist[i-3][j+4]>=1||dist[i-3][j+3]>=1)&&
-		  (dist[i+4][j-4]>=1||dist[i+4][j-3]>=1||dist[i+3][j-4]>=1||dist[i+3][j-3]>=1))) {
+	  else if(i>2&&j<(int)protein.size()-2) {
+	    if((dist[i-3][j-3]>=1&&dist[i+3][j+3]>=1)||(dist[i-3][j+3]>=1&&dist[i+3][j-3]>=1)) {
 	      dist[i][j]+=4;
 	      dist[j][i]+=4;
-              
+	      printf("COND2 I=%i J=%i\n",i,j);
+	    }
+	    else if(i>3&&j<(int)protein.size()-3) {
+	      if(((dist[i-3][j-3]>=1||dist[i-3][j-4]>=1||dist[i-4][j-3]>=1||dist[i-4][j-4]>=1)&&
+		  (dist[i+4][j+4]>=1||dist[i+4][j+3]>=1||dist[i+3][j+3]>=1||dist[i+3] [j+4]>=1))
+		 ||((dist[i-4][j+4]>=1||dist[i-4][j+3]>=1||dist[i-3][j+4]>=1||dist[i-3][j+3]>=1)&&
+		    (dist[i+4][j-4]>=1||dist[i+4][j-3]>=1||dist[i+3][j-4]>=1||dist[i+3][j-3]>=1))) {
+		dist[i][j]+=4;
+		dist[j][i]+=4;
+		printf("COND3 I=%i J=%i\n",i,j);
+	      }	     
 	    }
 	  }
 	}

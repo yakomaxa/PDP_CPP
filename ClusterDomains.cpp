@@ -16,6 +16,25 @@ ClusterDomains::ClusterDomains(){
     
 }
 
+static void listdomains(std::vector<Domain>& domains) {
+  int i = -1;
+  for (Domain& dom : domains) {
+    i++;
+    std::cout << "create DOMAIN" << i << ", resi ";
+    std::vector<Segment>& segments = dom.getSegments();
+
+    int flag=0;
+    for (Segment& s : segments) {
+      if (flag>0){
+	std::cout << "+" ;
+      }
+      std::cout << s ;
+      flag++;
+    }
+    std::cout << ";" << std::endl;
+  }
+};
+
 int calc_S(const int a1,
             const int b1,
             const int a2,
@@ -61,13 +80,13 @@ int ClusterDomains::isContacting(Domain& i,Domain& j,const std::vector<int>& icl
       int fromj=j.getSegmentAtPos(l).getFrom();
       int toj=j.getSegmentAtPos(l).getTo();     
       for (int n = 0 ; n < nclose ; n++){
-	if (fromi <= iclose[n] && toi > iclose[n] &&
-	    fromj <= jclose[n] && toj > jclose[n] 
+	if (fromi <= iclose[n] && toi >= iclose[n] &&
+	    fromj <= jclose[n] && toj >= jclose[n] 
 	    ){
 	  return true;
 	}
-	if (fromi <= jclose[n] && toi > jclose[n] &&
-	    fromj <= iclose[n] && toj > iclose[n] 
+	if (fromi <= jclose[n] && toi >= jclose[n] &&
+	    fromj <= iclose[n] && toj >= iclose[n] 
 	    ){
 	  return true;
 	}
@@ -295,7 +314,7 @@ std::vector<Domain> ClusterDomains::cluster(
       maximum_values = -1.0;
       maximum_valuem = -1.0;      
     }
-    
+    listdomains(domains);
   } while (maximum_value > 0.0 || maximum_values > 0.0 || maximum_valuem > 0.0);
 
   std::vector<Domain> newdoms;

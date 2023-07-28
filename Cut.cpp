@@ -167,7 +167,7 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
 		for(kseg=0;kseg<iseg;kseg++) {
 		  from2 = dom.getSegmentAtPos(kseg).getFrom();
 		  to2 = dom.getSegmentAtPos(kseg).getTo();
-		  if(from2 <= j && j<=to2){
+		  if(from2 <= j && j<to2){
 		    if(abs(i-j)>4){
 		      contacts[k]+=(dist[j][i]);
 		    }
@@ -179,7 +179,7 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
 		for(kseg=0;kseg<iseg;kseg++) {
 		  from2 = dom.getSegmentAtPos(kseg).getFrom();
 		  to2 = dom.getSegmentAtPos(kseg).getTo();
-		  if(from2 <= i && i<=to2){
+		  if(from2 <= i && i<to2){
 		    if(abs(i-j)>4){
 		      contacts[k]+=(dist[j][i]);
 		    }
@@ -231,7 +231,7 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
 	if (size0>0){
 	  average_density/=size0;
 	}else{
-	  return -1;
+	  return -1;	  
 	}
 	
 	if(val.first_cut) {
