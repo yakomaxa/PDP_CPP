@@ -54,7 +54,7 @@ int main(int argc, char *argv[]){
   dom.setSize((int)ca.size());
   dom.setNseg(1);
   dom.getSegmentAtPos(0).setFrom(0);
-  dom.getSegmentAtPos(0).setTo(int(ca.size()));
+  dom.getSegmentAtPos(0).setTo(int(ca.size())-1);
   CutSites* cutSites = new CutSites();
   printf("---------Setting domain info done\n");  
   // Do the initial splitting

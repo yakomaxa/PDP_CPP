@@ -67,7 +67,7 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
 	  
 	  //printf("---Starting loop4\n");
 
-	  for (int n = 0; n <= nclose_raw; n++){
+	  for (int n = 0; n < nclose_raw; n++){
 	    i=iclose_raw[n];
 	    j=jclose_raw[n];
 	    for(jseg=0;jseg<iseg;jseg++) {
@@ -112,7 +112,7 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
 	    size11=size1t+(k-from+1);
 	    size22=size2t+(to-k);
 	    //printf("---------Starting loop9\n");
-	    for (int n = 0; n <= nclose_raw; n++){
+	    for (int n = 0; n < nclose_raw; n++){
 	      i=iclose_raw[n];
 	      j=jclose_raw[n];
 	      if(from<=i && i<=k){
