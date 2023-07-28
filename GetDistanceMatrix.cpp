@@ -123,16 +123,17 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
     for(int j=i;j<(int)protein.size()-1;j++) {
       std::string  chain2 = protein.at(j).getChain();
       if (chain1==chain2){
-	/**	Atom ca1 = protein.at(i);
+	Atom ca1 = protein.at(i);
 	Atom ca2 = protein.at(j);          
 	dx = ca1.getX() - ca2.getX();
 	dy = ca1.getY() - ca2.getY();
 	dz = ca1.getZ() - ca2.getZ();	
 	d = dx*dx + dy*dy + dz*dz;
 	if (d>=dt1){
+	  dist[i][j]=0;
 	  continue;
 	}
-	**/
+	
 	if(dist[i][j]>=2&&j-i>5) {
 	  if((dist[i-1][j-1]>=2&&dist[i+1][j+1]>=2)||(dist[i-1][j+1]>=2&&dist [i+1][j-1]>=2))  {
 	    dist[i][j]+=4;
