@@ -15,7 +15,7 @@ static void listdomains(std::vector<Domain>& domains) {
   int i = -1;
   for (Domain& dom : domains) {
     i++;
-    std::cout << "select DOMAIN" << i << ", resi ";
+    std::cout << "create DOMAIN" << i << ", resi ";
     std::vector<Segment>& segments = dom.getSegments();
 
     int flag=0;
