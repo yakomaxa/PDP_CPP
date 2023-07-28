@@ -13,6 +13,7 @@
 class CutDomain {
 private:
   int ndom;
+  PDPDistanceMatrix pdpMatrix;
   std::vector<Domain> domains;
   std::vector<std::vector<int>> dist;
   std::vector<Atom> ca;
@@ -22,8 +23,7 @@ public:
   static bool verbose;
   CutDomain(std::vector<Atom>& ca, PDPDistanceMatrix& pdpMatrix,std::vector<int>& init_cutsites);
   void cutDomain(Domain& dom,
-		 CutSites& cut_sites,
-		 PDPDistanceMatrix& pdpMatrix);
+		 CutSites& cut_sites);
   std::vector<Domain> getDomains();
   
 };

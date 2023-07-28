@@ -68,7 +68,7 @@ int main(int argc, char *argv[]){
     init_cutsites.push_back(i+1);
   }
   CutDomain cutDomain(ca,pdpMatrix, init_cutsites);
-  cutDomain.cutDomain(dom, cutSites, pdpMatrix);
+  cutDomain.cutDomain(dom, cutSites);
   printf("---------Initial splitting done\n");  
   return 0;  
 

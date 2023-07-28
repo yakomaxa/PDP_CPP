@@ -137,13 +137,13 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
 	  if((dist[i-1][j-1]>=2&&dist[i+1][j+1]>=2)||(dist[i-1][j+1]>=2&&dist [i+1][j-1]>=2))  {
 	    dist[i][j]+=4;
 	    dist[j][i]+=4;
-	    printf("COND1 I=%i J=%i\n",i,j);
+	    //	    printf("COND1 I=%i J=%i\n",i,j);
 	  }
 	  else if(i>2&&j<(int)protein.size()-2) {
 	    if((dist[i-3][j-3]>=1&&dist[i+3][j+3]>=1)||(dist[i-3][j+3]>=1&&dist[i+3][j-3]>=1)) {
 	      dist[i][j]+=4;
 	      dist[j][i]+=4;
-	      printf("COND2 I=%i J=%i\n",i,j);
+	      //	      printf("COND2 I=%i J=%i\n",i,j);
 	    }
 	    else if(i>3&&j<(int)protein.size()-3) {
 	      if(((dist[i-3][j-3]>=1||dist[i-3][j-4]>=1||dist[i-4][j-3]>=1||dist[i-4][j-4]>=1)&&
@@ -152,7 +152,7 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
 		    (dist[i+4][j-4]>=1||dist[i+4][j-3]>=1||dist[i+3][j-4]>=1||dist[i+3][j-3]>=1))) {
 		dist[i][j]+=4;
 		dist[j][i]+=4;
-		printf("COND3 I=%i J=%i\n",i,j);
+		//		printf("COND3 I=%i J=%i\n",i,j);
 	      }	     
 	    }
 	  }
