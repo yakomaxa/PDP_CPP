@@ -27,6 +27,7 @@ public:
     int numResidues;    
     Structure(std::string filename);
     std::vector<Atom> getRepresentativeAtomArray();
+    std::vector<int> tailofchain;
 };
 
 #endif /* Structure_hpp */

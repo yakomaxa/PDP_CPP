@@ -54,27 +54,22 @@ int main(int argc, char *argv[]){
   dom.setSize((int)ca.size());
   dom.setNseg(1);
 
-  //  dom.getSegmentAtPos(2).setFrom(472);
   dom.getSegmentAtPos(0).setFrom(0);
   dom.getSegmentAtPos(0).setTo(int(ca.size())-1);
   
-  //  dom.getSegmentAtPos(1).setFrom(236);
-  //  dom.getSegmentAtPos(1).setTo(471);
-
-  //  dom.getSegmentAtPos(0).setFrom(0);
-  //  dom.getSegmentAtPos(0).setTo(235);
-  //**/
-
-
   CutSites cutSites = CutSites();
   printf("---------Setting domain info done\n");  
   // Do the initial splitting
   printf("---------Initial splitting\n");
   std::vector<int> init_cutsites;
-  init_cutsites.push_back(236);
-  init_cutsites.push_back(472);
-  CutDomain cutDomain(ca,pdpMatrix,init_cutsites);
-  cutDomain.cutDomain(dom, cutSites, pdpMatrix,init_cutsites);
+  // add the last residue of the chains except for the last one
+  s.tailofchain.erase(s.tailofchain.end()-1);
+  for (int i : s.tailofchain){
+    printf("ADDING INITAIAL SITE%i\n",i);
+    init_cutsites.push_back(i);
+  }
+  CutDomain cutDomain(ca,pdpMatrix, init_cutsites);
+  cutDomain.cutDomain(dom, cutSites, pdpMatrix, init_cutsites);
   printf("---------Initial splitting done\n");  
 
 

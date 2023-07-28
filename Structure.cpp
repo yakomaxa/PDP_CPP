@@ -37,8 +37,10 @@ Structure::Structure(std::string filename){
 std::vector<Atom> Structure::getRepresentativeAtomArray(){
     std::vector<Atom> Atoms(this->numResidues);
     int index=-1;
+    int CA_flag=0;
     for (gemmi::Model& model : this->structure.models){
         for (gemmi::Chain& chain : model.chains) {
+	  CA_flag=0;
             for (gemmi::Residue& residue : chain.residues) {
                 for (gemmi::Atom &atom : residue.atoms) {
                     std::string elementname = atom.element.name();
@@ -48,6 +50,7 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
 		      Atoms[index].setY(atom.pos.y);
 		      Atoms[index].setZ(atom.pos.z);
 		      Atoms[index].setChain(chain.name);
+		      CA_flag=1;
                     }
 		    if (atom.name == "CB" && elementname == "C"){
 		      Atoms[index].setX(atom.pos.x);
@@ -56,6 +59,10 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
                     }
                 }
             }
+	  if(CA_flag==1){
+	    this->tailofchain.push_back(index);
+	    printf("tail %i\n",index);
+	  }
         }
     }
 
