@@ -36,7 +36,7 @@ int main(int argc, char *argv[]){
   Structure s = Structure(filename);
   printf("---------Reading structure Done\n");
   std::vector<Domain> domains;
-
+  
   printf("---------Get Repr atoms\n");
   std::vector<Atom> ca = s.getRepresentativeAtomArray();
   printf("---------Get Repr atoms Done\n");
@@ -56,23 +56,23 @@ int main(int argc, char *argv[]){
 
   dom.getSegmentAtPos(0).setFrom(0);
   dom.getSegmentAtPos(0).setTo(int(ca.size())-1);
-  
   CutSites cutSites = CutSites();
   printf("---------Setting domain info done\n");  
   // Do the initial splitting
   printf("---------Initial splitting\n");
   std::vector<int> init_cutsites;
   // add the head residue of the chains except for the first one
-  s.tailofchain.erase(s.tailofchain.end()-1);
+  s.tailofchain.pop_back();;
   for (int i : s.tailofchain){
     printf("ADDING INITAIAL SITE%i\n",i);
     init_cutsites.push_back(i+1);
   }
   CutDomain cutDomain(ca,pdpMatrix, init_cutsites);
-  cutDomain.cutDomain(dom, cutSites, pdpMatrix, init_cutsites);
+  cutDomain.cutDomain(dom, cutSites, pdpMatrix);
   printf("---------Initial splitting done\n");  
+  return 0;  
 
-
+  
   domains =  cutDomain.getDomains();
   listdomains(domains);
   // Cluster domains
@@ -87,6 +87,6 @@ int main(int argc, char *argv[]){
   printf("FINAL!!\n");
   listdomains(domains);
   
-    return 0;
+  return 0;
 }
 

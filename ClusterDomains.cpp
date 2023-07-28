@@ -321,8 +321,8 @@ std::vector<Domain> ClusterDomains::cluster(
   for (auto i : ClusterDomains::visibleDomains){
     newdoms.push_back(domains[i]);
   }
-  
-  return newdoms;
+  domains = newdoms;
+  return domains;
 };
 
 

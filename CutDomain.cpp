@@ -11,7 +11,7 @@ CutDomain::CutDomain(std::vector<Atom> &ca, PDPDistanceMatrix &pdpMatrix, std::v
     this->init_cutsites = init_cutsites;
 }
 
-void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& pdpMatrix, std::vector<int>& init_cutsites) {
+void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& pdpMatrix) {
  
     int i, site;
     
@@ -24,17 +24,18 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
     val.first_cut = true;
     
     Cut cut = Cut();
-    if (init_cutsites.size()==0){
+    if (CutDomain::init_cutsites.size()==0){
+      printf("CUTTING DE NOVO\n");
       site = cut.cut(ca, dom, val, dist, pdpMatrix);
     }else{
-      site = init_cutsites[init_cutsites.size()-1];
-      init_cutsites.erase(init_cutsites.end() - 1);
+      printf("CUTTING OF GIVEN\n");
+      site = CutDomain::init_cutsites[CutDomain::init_cutsites.size()-1];
+      CutDomain::init_cutsites.pop_back();
     }
     printf("site %i \n",site)   ;
     if (site < 0) {
-      //printf("site<0\n");
-      dom.setScore(val.s_min);
       domains.push_back(dom);
+      dom.setScore(val.s_min);
       ndom++;
       return;
     }
@@ -43,9 +44,6 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
     cut_sites.addNcuts(1);
     printf("CUT_SITE Ncuts= %i\n",    cut_sites.getNcuts());
     cut_sites.cut_sites[cut_sites.getNcuts()]=site;
-    for (auto a=1; a<cut_sites.getNcuts();a++){
-      printf("HOGE=%i\n",cut_sites.cut_sites[a]);
-    }
 
     dom1.setSize(0);
     dom1.setNseg(0);
@@ -126,6 +124,7 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
       }
     }
 
+    /**
     if(verbose){
       std::cout << "  CUTR dom1 ...  nse" << dom1.getNseg() << std::endl;
     }
@@ -136,10 +135,11 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
 		  << dom1.getSegmentAtPos(i).getTo() << std::endl;
       }
     }
-       
-    cutDomain(dom1, cut_sites, pdpMatrix,init_cutsites);
-
+    **/
     
+    cutDomain(dom1, cut_sites, pdpMatrix);
+
+    /**
     if(verbose){
       std::cout << "  CUTR dom2 ...  nse" << dom2.getNseg() << std::endl;
     }
@@ -150,9 +150,9 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites, PDPDistanceMatrix& p
 		  << dom2.getSegmentAtPos(i).getTo() << std::endl;
       }
     }
+    **/
 
-
-    cutDomain(dom2, cut_sites, pdpMatrix,init_cutsites);
+     cutDomain(dom2, cut_sites, pdpMatrix);
 };
 
 std::vector<Domain> CutDomain::getDomains(){
