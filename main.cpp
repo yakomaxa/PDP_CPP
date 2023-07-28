@@ -62,11 +62,11 @@ int main(int argc, char *argv[]){
   // Do the initial splitting
   printf("---------Initial splitting\n");
   std::vector<int> init_cutsites;
-  // add the last residue of the chains except for the last one
+  // add the head residue of the chains except for the first one
   s.tailofchain.erase(s.tailofchain.end()-1);
   for (int i : s.tailofchain){
     printf("ADDING INITAIAL SITE%i\n",i);
-    init_cutsites.push_back(i);
+    init_cutsites.push_back(i+1);
   }
   CutDomain cutDomain(ca,pdpMatrix, init_cutsites);
   cutDomain.cutDomain(dom, cutSites, pdpMatrix, init_cutsites);
