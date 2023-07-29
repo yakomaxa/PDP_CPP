@@ -21,6 +21,8 @@ public:
     void setFromOrg(int from);
     int getToOrg() const;
     void setToOrg(int to);
+    std::string getChain() const;
+    void setChain(std::string chain);
 
     // Overloaded operators
     bool operator==(const Segment& other) const;

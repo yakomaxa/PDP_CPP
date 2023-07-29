@@ -10,13 +10,17 @@ void Segment::setFrom(int from) { from_ = from; }
 int Segment::getTo() const { return to_; }
 void Segment::setTo(int to) { to_ = to; }
 
-int Segment::getFromOrg() const { return from_; }
-void Segment::setFromOrg(int from) { from_ = from; }
-int Segment::getToOrg() const { return to_; }
-void Segment::setToOrg(int to) { to_ = to; }
+int Segment::getFromOrg() const { return from_org_; }
+void Segment::setFromOrg(int from) { from_org_ = from; }
+int Segment::getToOrg() const { return to_org_; }
+void Segment::setToOrg(int to) { to_org_ = to; }
 
 double Segment::getScore() const { return score_; }
 void Segment::setScore(double score) { score_ = score; }
+
+std::string Segment::getChain() const { return chain_; }
+void Segment::setChain(std::string chain) { chain_ = chain; }
+
 
 // Overloaded operators
 bool Segment::operator==(const Segment& other) const {
@@ -36,6 +40,6 @@ bool Segment::operator>=(const Segment& other) const { return !(*this < other); 
 std::ostream& operator<<(std::ostream& os, const Segment& segment) {
   //os << "Segment [from=" << segment.from_ << ", to=" << segment.to_ << ", score=" << segment.score_ << "]";
   //  os <<  segment.from_ + 1 << "-" << segment.to_ + 1;
-  os <<  segment.from_org_ + 1 << "-" << segment.to_org_ + 1;
+  os << "(resi " << segment.from_org_ << "-" << segment.to_org_ << " and chain " << segment.chain_ + ")";
   return os;
 }

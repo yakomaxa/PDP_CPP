@@ -15,7 +15,7 @@ static void listdomains(std::vector<Domain>& domains) {
   int i = -1;
   for (Domain& dom : domains) {
     i++;
-    std::cout << "create DOMAIN" << i << ", resi ";
+    std::cout << "create DOMAIN" << i << ", ";
     std::vector<Segment>& segments = dom.getSegments();
 
     int flag=0;
@@ -70,12 +70,21 @@ int main(int argc, char *argv[]){
   CutDomain cutDomain(ca,pdpMatrix, init_cutsites);
   cutDomain.cutDomain(dom, cutSites,pdpMatrix);
   printf("---------Initial splitting done\n");    
-  domains =  cutDomain.getDomains();
+  domains =  cutDomain.getDomains();  
   listdomains(domains);
   // Cluster domains
   printf("---------Clustering domains\n");  
   domains = ClusterDomains::cluster(domains, pdpMatrix);
   printf("---------Clustering domains Done\n");  
+  for (int i= 0 ; i < domains.size(); i++){
+    for (int j = 0 ; j < domains[i].getNseg();j++){
+      domains[i].getSegmentAtPos(j).setFromOrg(ca[domains[i].getSegmentAtPos(j).getFrom()].getIndexOrg());
+      domains[i].getSegmentAtPos(j).setToOrg(ca[domains[i].getSegmentAtPos(j).getTo()].getIndexOrg());
+      domains[i].getSegmentAtPos(j).setChain(ca[domains[i].getSegmentAtPos(j).getTo()].getChain());
+      //      printf("WOWOWOW=%i\n",ca[dom.getSegmentAtPos(i).getFrom()].getIndexOrg());
+    }
+  }
+
   listdomains(domains);
   // Remove short segments
   printf("---------Cleanup \n");  
