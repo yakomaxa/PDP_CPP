@@ -71,19 +71,17 @@ int main(int argc, char *argv[]){
   cutDomain.cutDomain(dom, cutSites,pdpMatrix);
   printf("---------Initial splitting done\n");    
   domains =  cutDomain.getDomains();  
-  listdomains(domains);
   // Cluster domains
   printf("---------Clustering domains\n");  
   domains = ClusterDomains::cluster(domains, pdpMatrix);
   printf("---------Clustering domains Done\n");  
-  for (int i= 0 ; i < domains.size(); i++){
+  for (int i= 0 ; i < (int)domains.size(); i++){
     for (int j = 0 ; j < domains[i].getNseg();j++){
       domains[i].getSegmentAtPos(j).setFromOrg(ca[domains[i].getSegmentAtPos(j).getFrom()].getIndexOrg());
       domains[i].getSegmentAtPos(j).setToOrg(ca[domains[i].getSegmentAtPos(j).getTo()].getIndexOrg());
       domains[i].getSegmentAtPos(j).setChain(ca[domains[i].getSegmentAtPos(j).getTo()].getChain());
     }
   }
-
   listdomains(domains);
   // Remove short segments
   printf("---------Cleanup \n");  
