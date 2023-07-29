@@ -4,30 +4,29 @@ bool CutDomain::verbose = true;
 int ndom;
 
 CutDomain::CutDomain(std::vector<Atom> &ca, PDPDistanceMatrix &pdpMatrix, std::vector<int> &init_cutsites){
-    this->pdpMatrix = pdpMatrix;
     this->dist = pdpMatrix.getDist();
     this->ca = ca;
-    ndom = 0;
-    domains = std::vector<Domain>();
+    this->ndom = 0;
+    this->domains = std::vector<Domain>();
     this->init_cutsites = init_cutsites;
 }
 
-void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites) {
+void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites,PDPDistanceMatrix& pdpMatrix) {
  
     int i, site;
     
-    Domain dom1 = Domain();
-    Domain dom2 = Domain();
+    Domain dom1;
+    Domain dom2;
     
-    CutValues val = CutValues();
+    CutValues val;
     val.s_min = 100;
     val.site2 = 0;
     val.first_cut = true;
     
-    Cut cut = Cut();
-    if (CutDomain::init_cutsites.size()==0){
+    Cut cut;
+    if (init_cutsites.size()<=0){
       printf("CUTTING DE NOVO\n");
-      site = cut.cut(ca, dom, val, CutDomain::dist, CutDomain::pdpMatrix);
+      site = cut.cut(CutDomain::ca, dom, val, CutDomain::dist, pdpMatrix);
     }else{
       printf("CUTTING OF GIVEN\n");
       site = CutDomain::init_cutsites.back();
@@ -35,8 +34,8 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites) {
     }
     printf("site %i \n",site)   ;
     if (site < 0) {
-      domains.push_back(dom);
       dom.setScore(val.s_min);
+      CutDomain::domains.push_back(dom);
       ndom++;
       return;
     }
@@ -138,7 +137,7 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites) {
     }
     **/
     
-    cutDomain(dom1, cut_sites);
+    cutDomain(dom1, cut_sites,pdpMatrix);
 
     /**
     if(verbose){
@@ -153,7 +152,7 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites) {
     }
     **/
 
-    cutDomain(dom2, cut_sites);
+    cutDomain(dom2, cut_sites, pdpMatrix);
 };
 
 std::vector<Domain> CutDomain::getDomains(){

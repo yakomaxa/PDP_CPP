@@ -68,11 +68,8 @@ int main(int argc, char *argv[]){
     init_cutsites.push_back(i+1);
   }
   CutDomain cutDomain(ca,pdpMatrix, init_cutsites);
-  cutDomain.cutDomain(dom, cutSites);
-  printf("---------Initial splitting done\n");  
-  return 0;  
-
-  
+  cutDomain.cutDomain(dom, cutSites,pdpMatrix);
+  printf("---------Initial splitting done\n");    
   domains =  cutDomain.getDomains();
   listdomains(domains);
   // Cluster domains
