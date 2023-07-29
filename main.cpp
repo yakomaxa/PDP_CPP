@@ -81,7 +81,6 @@ int main(int argc, char *argv[]){
       domains[i].getSegmentAtPos(j).setFromOrg(ca[domains[i].getSegmentAtPos(j).getFrom()].getIndexOrg());
       domains[i].getSegmentAtPos(j).setToOrg(ca[domains[i].getSegmentAtPos(j).getTo()].getIndexOrg());
       domains[i].getSegmentAtPos(j).setChain(ca[domains[i].getSegmentAtPos(j).getTo()].getChain());
-      //      printf("WOWOWOW=%i\n",ca[dom.getSegmentAtPos(i).getFrom()].getIndexOrg());
     }
   }
 
