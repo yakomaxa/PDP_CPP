@@ -17,6 +17,11 @@ public:
     double getScore() const;
     void setScore(double score);
 
+    int getFromOrg() const;
+    void setFromOrg(int from);
+    int getToOrg() const;
+    void setToOrg(int to);
+
     // Overloaded operators
     bool operator==(const Segment& other) const;
     bool operator!=(const Segment& other) const;
@@ -29,9 +34,13 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Segment& segment);
 
 private:
-    int from_;
-    int to_;
-    double score_;
+  int from_;
+  int to_;
+  double score_;
+  int from_org_;
+  int to_org_;
+  std::string chain_;
+
 };
 
 #endif  // SEGMENT_HPP

@@ -48,3 +48,13 @@ void Atom::setChain(std::string chain){
 std::string Atom::getChain(){
     return this->chain;
 } ;
+
+
+void Atom::setIndexOrg(int resi){
+    this->indexorg = resi;
+};
+
+
+int Atom::getIndexOrg(){
+    return this->indexorg;
+} ;

@@ -50,6 +50,7 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
 		      Atoms[index].setY(atom.pos.y);
 		      Atoms[index].setZ(atom.pos.z);
 		      Atoms[index].setChain(chain.name);
+		      Atoms[index].setIndexOrg(stoi(residue.seqid.str()));
 		      CA_flag=1;
                     }
 		    if (atom.name == "CB" && elementname == "C"){

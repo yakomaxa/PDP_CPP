@@ -8,6 +8,7 @@ class Atom {
 private:
   float x, y, z;
   std::string chain;
+  int indexorg;
     
 public:
     Atom();
@@ -19,8 +20,11 @@ public:
     float getY() ;
     float getZ() ;
   
-  void setChain(std::string chain) ;
+    void setChain(std::string chain) ;
     std::string getChain() ;
+
+    void setIndexOrg(int resi) ;
+    int getIndexOrg() ;
 };
 
 #endif
