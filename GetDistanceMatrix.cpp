@@ -36,7 +36,7 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
   float d,dt1,dt2,dt3,dt4;
   int nc=0;  
 
-  std::cerr << protein.size() << " protein.len > MAXLEN " << PDPParameters::MAXLEN << std::endl;
+  std::cerr << protein.size() << " protein.len < MAXLEN " << PDPParameters::MAXLEN << std::endl;
   if((int)protein.size() >= PDPParameters::MAXLEN) {
     std::cerr << protein.size() << " protein.len > MAXLEN " << PDPParameters::MAXLEN << std::endl;
     //return 0;

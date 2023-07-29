@@ -51,7 +51,6 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
 	    Atoms[index].setZ(atom.pos.z);
 	    Atoms[index].setChain(chain.name);
 	    Atoms[index].setIndexOrg(stoi(residue.seqid.str()));
-	    printf("RESI = %i\n",stoi(residue.seqid.str()));
 	    CA_flag=1;
 	  }
 	  if (atom.name == "CB" && elementname == "C"){
@@ -63,7 +62,6 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
       }
       if(CA_flag==1){
 	this->tailofchain.push_back(index);
-	printf("tail %i\n",index);
       }
     }
   }
