@@ -1,5 +1,5 @@
 CXX	= g++-12
-CXXFLAGS  =  -std=c++20 -Wall -I./ -O3 -ffast-math -Ofast -march=native -funroll-loops -flto
+CXXFLAGS  =  -std=c++20 -Wall -I./gemmi/include/ -O3 -ffast-math -Ofast -march=native -funroll-loops -flto
 LIBS    = -lm -lz 
 VPATH   = ./
 SRC     = $(shell ls $(VPATH)/*.cpp)
