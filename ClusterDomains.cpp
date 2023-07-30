@@ -227,6 +227,7 @@ std::vector<Domain> ClusterDomains::cluster(
   do {
     //    std::vector<std::vector<int>> contacts;    
     for(int i : ClusterDomains::visibleDomains){
+      //      std::sort(domains[i].getContacted().begin(),domains[i].getContacted().end());
       for (int j : domains[i].getContacted()){
 	if (j<=i){
 	  continue;

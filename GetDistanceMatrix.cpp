@@ -118,7 +118,7 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
   }
 
   for(int i=1;i<(int)protein.size();i++) {
-    for(int j=2;j<(int)protein.size()-1;j++) {	
+    for(int j=i;j<(int)protein.size()-1;j++) {	
       if(dist[i][j]>=2&&j-i>5) {
 	if((dist[i-1][j-1]>=2&&dist[i+1][j+1]>=2)||(dist[i-1][j+1]>=2&&dist [i+1][j-1]>=2))  {
 	  dist[i][j]+=4;
