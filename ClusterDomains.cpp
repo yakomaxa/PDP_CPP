@@ -223,13 +223,13 @@ std::vector<Domain> ClusterDomains::cluster(
   }
 
 
-  std::vector<Domain> olddomains = domains; 
+  //  std::vector<Domain> olddomains = domains; 
   do {
     //    std::vector<std::vector<int>> contacts;    
     for(int i : ClusterDomains::visibleDomains){
       //      std::sort(domains[i].getContacted().begin(),domains[i].getContacted().end());
       for (int j : domains[i].getContacted()){
-	if (j<=i){
+       	if (j==i){
 	  continue;
 	}
 	int total_contacts = contacts_list[i][j];

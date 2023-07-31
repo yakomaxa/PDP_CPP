@@ -4,7 +4,7 @@
 class PDPParameters {
 public:
     static const int MAXSIZE;
-    static const int MAXLEN ;
+    static int MAXLEN ;
     static const int MAXDOM ;
     static const int MAX_CUTS ;
     static const int MIN_DOMAIN_LENGTH;
@@ -22,6 +22,9 @@ public:
     static const float CUT_OFF_VALUE2; /* decide to double cut */
     static const float CUT_OFF_VALUE1S; /* decide to combine small domains */
     static const float CUT_OFF_VALUE1M; /* decide to combine medium domains */
+
+
+  void setMAXLEN(int maxlen);
 };
 
 #endif /* PDPPARAMETERS_H */

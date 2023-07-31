@@ -36,14 +36,15 @@ int main(int argc, char *argv[]){
   Structure s = Structure(filename);
   printf("---------Reading structure Done\n");
   std::vector<Domain> domains;
-  
+  PDPParameters param;
+  param.setMAXLEN(s.numResidues);
   printf("---------Get Repr atoms\n");
   std::vector<Atom> ca = s.getRepresentativeAtomArray();
   printf("---------Get Repr atoms Done\n");
-  GetDistanceMatrix distMaxCalculator;
-
+  GetDistanceMatrix distMtxCalculator;
+  
   printf("---------distMat creation\n");
-  PDPDistanceMatrix pdpMatrix = distMaxCalculator.getDistanceMatrix(ca);
+  PDPDistanceMatrix pdpMatrix = distMtxCalculator.getDistanceMatrix(ca);
   printf("---------distMat creation Done\n");
 
   Domain dom;

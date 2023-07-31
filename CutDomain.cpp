@@ -36,7 +36,7 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites,PDPDistanceMatrix& pd
     if (site < 0) {
       dom.setScore(val.s_min);
       CutDomain::domains.push_back(dom);
-      ndom++;
+      CutDomain::ndom++;
       return;
     }
 
