@@ -1,3 +1,5 @@
+#include <fstream>
+
 #include "Structure.hpp"
 #include "Atom.hpp"
 //#include "Chain.hpp"
@@ -11,6 +13,7 @@
 #include "PDPParameters.hpp"
 //#include "LocalDomainParser.hpp"
 
+// This function writes to standard output
 static void listdomains(std::vector<Domain>& domains) {
   int i = -1;
   for (Domain& dom : domains) {
@@ -26,8 +29,39 @@ static void listdomains(std::vector<Domain>& domains) {
       std::cout << s ;
       flag++;
     }
-    std::cout << ";" << std::endl;
+    std::cout << ";" << "\n";
   }
+};
+
+// This function writes to a file
+static void listdomains(std::vector<Domain>& domains, const std::string& filename) {
+  std::ofstream output_file(filename);
+
+  if (!output_file) {
+    std::cerr << "Cannot open the output file: " << filename << "\n";
+    return;
+  }
+
+  int i = -1;
+  for (Domain& dom : domains) {
+    i++;
+    output_file << "create DOMAIN" << i << ", ";
+    std::vector<Segment>& segments = dom.getSegments();
+
+    int flag=0;
+    for (Segment& s : segments) {
+      if (flag>0){
+	output_file << "+" ;
+      }
+      output_file << s ;
+      flag++;
+    }
+    output_file << ";" << "\n";
+  }
+  output_file << "set grid_mode,1" << "\n";
+  output_file << "set grid_slot,2,DOM*" << "\n";
+  
+  output_file.close();
 };
 
 int main(int argc, char *argv[]){
@@ -84,12 +118,14 @@ int main(int argc, char *argv[]){
     }
   }
   listdomains(domains);
+  listdomains(domains,"naive.pml");
   // Remove short segments
   printf("---------Cleanup \n");  
   ShortSegmentRemover::cleanup(domains);
   printf("---------Cleanup Done\n");  
   printf("FINAL!!\n");
   listdomains(domains);
+  listdomains(domains,"removed.pml");
   
   return 0;
 }
