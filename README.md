@@ -20,4 +20,4 @@ pdppymol.py, a pymol extention to call PDP, is under MIT-license.
 
 TODO
 
-import copyright notification from original java code for appropriate parts
+import author information from original java code for appropriate parts
