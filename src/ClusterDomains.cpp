@@ -31,7 +31,7 @@ static void listdomains(std::vector<Domain>& domains) {
       std::cout << s ;
       flag++;
     }
-    std::cout << ";" << std::endl;
+    std::cout << ";" << "\n";
   }
 };
 
@@ -98,7 +98,7 @@ int ClusterDomains::isContacting(Domain& i,Domain& j,const std::vector<int>& icl
     
 std::vector<Domain> combine(std::vector<Domain> &domains, int Si, int Sj, double maximum_value, std::vector<std::vector<int>> &contacts) {
   if (verbose){
-        std::cout << "  +++  combining domains " << Si << " " << Sj << std::endl;
+        std::cout << "  +++  combining domains " << Si << " " << Sj << "\n";
   }
   for (int i = 0; i < domains[Sj].getNseg(); i++) {
     domains[Si].getSegmentAtPos(domains[Si].getNseg()).setFrom(domains[Sj].getSegmentAtPos(i).getFrom());
@@ -209,7 +209,7 @@ std::vector<Domain> ClusterDomains::cluster(
       }
     }
         
-    std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts << std::endl;
+    std::cout << " pos: d1:" << i << " vs d2:" << j << " d1:" << d1.getSegmentAtPos(0).getFrom() << "-" << d1.getSegmentAtPos(0).getTo() << " " <<  d2.getSegmentAtPos(0).getFrom() << "-" << d2.getSegmentAtPos(0).getTo() << " " << total_contacts << "\n" ;
     contacts_list[i][j]=contacts_list[j][i]=total_contacts;
      if (total_contacts > 0){
       domains[i].pushbackContacted(j);

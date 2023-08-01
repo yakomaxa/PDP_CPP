@@ -126,13 +126,15 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites,PDPDistanceMatrix& pd
 
     /**
     if(verbose){
-      std::cout << "  CUTR dom1 ...  nse" << dom1.getNseg() << std::endl;
+      std::cout << "  CUTR dom1 ...  nse" << dom1.getNseg() << 
+;
     }
 
     if ( verbose){
       for(i=0;i<dom1.getNseg();i++){
 	std::cout << "F ... from %d to %d" << dom1.getSegmentAtPos(i).getFrom() << " "
-		  << dom1.getSegmentAtPos(i).getTo() << std::endl;
+		  << dom1.getSegmentAtPos(i).getTo() << 
+;
       }
     }
     **/
@@ -141,13 +143,15 @@ void CutDomain::cutDomain(Domain& dom, CutSites& cut_sites,PDPDistanceMatrix& pd
 
     /**
     if(verbose){
-      std::cout << "  CUTR dom2 ...  nse" << dom2.getNseg() << std::endl;
+      std::cout << "  CUTR dom2 ...  nse" << dom2.getNseg() << 
+;
     }
 
     if ( verbose){
       for(i=0;i<dom2.getNseg();i++){
 	std::cout << "F ... from %d to %d" << dom2.getSegmentAtPos(i).getFrom() << " " 
-		  << dom2.getSegmentAtPos(i).getTo() << std::endl;
+		  << dom2.getSegmentAtPos(i).getTo() << 
+;
       }
     }
     **/
