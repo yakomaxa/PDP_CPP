@@ -3,6 +3,9 @@
 
 class PDPParameters {
 public:
+
+    static int maxIndex ;
+  
     static const int MAXSIZE;
     static int MAXLEN ;
     static const int MAXDOM ;

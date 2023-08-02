@@ -1,6 +1,8 @@
 #include "PDPParameters.hpp"
 
 
+int PDPParameters::maxIndex=0;
+
 const int PDPParameters::MAXSIZE = 350;
 int PDPParameters::MAXLEN = 20000;
 const int PDPParameters::MAXDOM = 1000;

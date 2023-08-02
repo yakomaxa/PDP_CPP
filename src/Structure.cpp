@@ -6,6 +6,7 @@
 //
 #include <iostream>
 #include "Structure.hpp"
+#include "PDPparameters.hpp"
 
 gemmi::Structure openCoordinatefile(const std::string & infilename){
   gemmi::MaybeGzipped inputfile(infilename);
@@ -39,6 +40,8 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
   int index=-1;
   int CA_flag=0;
   int chainid=0;
+  int resi=0;
+  int maxindex=0;
   for (gemmi::Model& model : this->structure.models){
     for (gemmi::Chain& chain : model.chains) {
       CA_flag=0;
@@ -51,8 +54,12 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
 	    Atoms[index].setY(atom.pos.y);
 	    Atoms[index].setZ(atom.pos.z);
 	    Atoms[index].setChain(chain.name);
-	    Atoms[index].setIndexOrg(stoi(residue.seqid.str()));
+	    resi=stoi(residue.seqid.str());
+	    Atoms[index].setIndexOrg(resi);
 	    Atoms[index].setChainId(chainid);
+	    if (maxindex < resi){
+	      maxindex = resi;
+	    }	      
 	    CA_flag=1;
 	  }
 	  if (atom.name == "CB" && elementname == "C"){
@@ -68,6 +75,6 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
       chainid++;
     }
   }
-
+  PDPParameters::maxIndex = maxindex;
   return Atoms;
 };

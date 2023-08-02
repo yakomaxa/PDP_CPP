@@ -33,8 +33,8 @@ bool Segment::operator==(const Segment& other) const {
 bool Segment::operator!=(const Segment& other) const { return !(*this == other); }
 
 bool Segment::operator<(const Segment& other) const {
-  int tmp1 = chainid_ * 10000;
-  int tmp2 = other.chainid_ * 10000;
+  int tmp1 = chainid_ * PDPParameters::maxIndex;
+  int tmp2 = other.chainid_ * PDPParameters::maxIndex;
   if ( from_ + tmp1 != other.from_ + tmp2 ) {
     printf("A = %i, B = %i\n", from_ + tmp1,other.from_ + tmp2);
     return (from_ + tmp1) < (other.from_ + tmp2);
