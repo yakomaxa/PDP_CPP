@@ -9,6 +9,7 @@ private:
   float x, y, z;
   std::string chain;
   int indexorg;
+  int chainid;
     
 public:
     Atom();
@@ -22,6 +23,9 @@ public:
   
     void setChain(std::string chain) ;
     std::string getChain() ;
+
+    void setChainId(int chainid) ;
+    int getChainId() ;
 
     void setIndexOrg(int resi) ;
     int getIndexOrg() ;

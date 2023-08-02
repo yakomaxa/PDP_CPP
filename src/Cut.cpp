@@ -45,8 +45,8 @@ int Cut::cut(std::vector<Atom>& ca,Domain& dom,CutValues& val,
         // qsort(dom.segment,dom.getNseg(),sizeof(struct Segment),segcmp);
         // what is going on with the segments??
 
-        std::vector<Segment> segments = dom.getSegments();
-	std::sort(segments.begin(), segments.end(), SegmentComparator());
+	//        std::vector<Segment> segments = dom.getSegments();
+	std::sort(dom.getSegments().begin(), dom.getSegments().end(), SegmentComparator());
     
         average_density = 0.0;
         size0=0;

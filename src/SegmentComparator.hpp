@@ -7,7 +7,7 @@
 
 class SegmentComparator {
 public:
-    int operator()(const Segment& v1, const Segment& v2) const;
+    bool operator()(const Segment& v1, const Segment& v2) const;
 };
 
 #endif /* SEGMENT_COMPARATOR_HPP */

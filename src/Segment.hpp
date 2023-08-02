@@ -23,6 +23,8 @@ public:
     void setToOrg(int to);
     std::string getChain() const;
     void setChain(std::string chain);
+    int getChainId() const;
+    void setChainId(int chainid);
 
     // Overloaded operators
     bool operator==(const Segment& other) const;
@@ -42,6 +44,7 @@ private:
   int from_org_;
   int to_org_;
   std::string chain_;
+  int chainid_;
 
 };
 

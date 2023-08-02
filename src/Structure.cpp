@@ -38,6 +38,7 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
   std::vector<Atom> Atoms(this->numResidues);
   int index=-1;
   int CA_flag=0;
+  int chainid=0;
   for (gemmi::Model& model : this->structure.models){
     for (gemmi::Chain& chain : model.chains) {
       CA_flag=0;
@@ -51,6 +52,7 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
 	    Atoms[index].setZ(atom.pos.z);
 	    Atoms[index].setChain(chain.name);
 	    Atoms[index].setIndexOrg(stoi(residue.seqid.str()));
+	    Atoms[index].setChainId(chainid);
 	    CA_flag=1;
 	  }
 	  if (atom.name == "CB" && elementname == "C"){
@@ -63,6 +65,7 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
       if(CA_flag==1){
 	this->tailofchain.push_back(index);
       }
+      chainid++;
     }
   }
 

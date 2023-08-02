@@ -1,4 +1,5 @@
 #include "Segment.hpp"
+#include "PDPParameters.hpp"
 
 // Constructors
 Segment::Segment() : from_(0), to_(0), score_(0.0) {}
@@ -21,17 +22,25 @@ void Segment::setScore(double score) { score_ = score; }
 std::string Segment::getChain() const { return chain_; }
 void Segment::setChain(std::string chain) { chain_ = chain; }
 
+int Segment::getChainId() const { return chainid_; }
+void Segment::setChainId(int chainid) { chainid_ = chainid; }
+
 
 // Overloaded operators
 bool Segment::operator==(const Segment& other) const {
-    return (from_ == other.from_) && (to_ == other.to_) && (score_ == other.score_);
+  return (from_ == other.from_) && (to_ == other.to_) && (score_ == other.score_) && (chainid_ == other.chainid_);
 }
 bool Segment::operator!=(const Segment& other) const { return !(*this == other); }
+
 bool Segment::operator<(const Segment& other) const {
-    if (from_ != other.from_) {
-        return from_ < other.from_;
-    }
-    return to_ < other.to_;
+  int tmp1 = chainid_ * 10000;
+  int tmp2 = other.chainid_ * 10000;
+  if ( from_ + tmp1 != other.from_ + tmp2 ) {
+    printf("A = %i, B = %i\n", from_ + tmp1,other.from_ + tmp2);
+    return (from_ + tmp1) < (other.from_ + tmp2);
+  }
+  printf("A = %i, B = %i\n", to_ + tmp1, other.to_ + tmp2);
+  return (to_ + tmp1) < (other.to_ + tmp2);
 }
 bool Segment::operator>(const Segment& other) const { return other < *this; }
 bool Segment::operator<=(const Segment& other) const { return !(other < *this); }
