@@ -2,7 +2,7 @@
 #include "PDPParameters.hpp"
 
 // Constructors
-Segment::Segment() : from_(0), to_(0), score_(0.0) {}
+Segment::Segment() : from_(0), to_(0), score_(0.0), chainid_(0) {}
 Segment::Segment(int from, int to, double score) : from_(from), to_(to), score_(score) {}
 
 // Getters and setters
