@@ -110,7 +110,6 @@ int main(int argc, char *argv[]){
   domains = ClusterDomains::cluster(domains, pdpMatrix);
   printf("---------Clustering domains Done\n");  
 
-  int maxind=0;
   for (int i= 0 ; i < (int)domains.size(); i++){
     for (int j = 0 ; j < domains[i].getNseg();j++){
       domains[i].getSegmentAtPos(j).setFromOrg(ca[domains[i].getSegmentAtPos(j).getFrom()].getIndexOrg());

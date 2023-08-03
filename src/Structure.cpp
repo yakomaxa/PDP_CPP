@@ -6,7 +6,7 @@
 //
 #include <iostream>
 #include "Structure.hpp"
-#include "PDPparameters.hpp"
+#include "PDPParameters.hpp"
 
 gemmi::Structure openCoordinatefile(const std::string & infilename){
   gemmi::MaybeGzipped inputfile(infilename);
