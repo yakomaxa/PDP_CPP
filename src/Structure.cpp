@@ -29,6 +29,9 @@ Structure::Structure(std::string filename){
                     if (atom.name == "CA" && elementname == "C"){
                         this->numResidues += 1;
                     }
+		    if ( (atom.name == "C4'" && elementname == "C")){
+                        this->numResidues += 1;
+                    }
                 }
             }
         }
@@ -48,7 +51,7 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
       for (gemmi::Residue& residue : chain.residues) {
 	for (gemmi::Atom &atom : residue.atoms) {
 	  std::string elementname = atom.element.name();
-	  if (atom.name == "CA" && elementname == "C"){
+	  if ( (atom.name == "CA" && elementname == "C") || (atom.name == "C4'" && elementname == "C" )){
 	    index += 1;
 	    Atoms[index].setX(atom.pos.x);
 	    Atoms[index].setY(atom.pos.y);
@@ -62,7 +65,7 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
 	    }	      
 	    CA_flag=1;
 	  }
-	  if (atom.name == "CB" && elementname == "C"){
+	  if ((atom.name == "CB" && elementname == "C") || (atom.name == "C6'" && elementname == "C" )){
 	    Atoms[index].setX(atom.pos.x);
 	    Atoms[index].setY(atom.pos.y);
 	    Atoms[index].setZ(atom.pos.z);

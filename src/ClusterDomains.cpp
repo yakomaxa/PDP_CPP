@@ -159,7 +159,6 @@ std::vector<Domain> ClusterDomains::cluster(
   
   std::vector<int> icontacted(ClusterDomains::ndom*ClusterDomains::ndom);
   std::vector<int> jcontacted(ClusterDomains::ndom*ClusterDomains::ndom);
-  int n_contact_pair=0;
   int i,j;
   
   int nclose_raw = pdpDistMatrix.getNclose_raw();
@@ -214,7 +213,6 @@ std::vector<Domain> ClusterDomains::cluster(
      if (total_contacts > 0){
       domains[i].pushbackContacted(j);
       domains[j].pushbackContacted(i);
-      n_contact_pair+=1;
      }
   }
   

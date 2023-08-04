@@ -147,13 +147,11 @@ PDPDistanceMatrix GetDistanceMatrix::getDistanceMatrix(std::vector<Atom>& protei
   }
   PDPDistanceMatrix matrix;
   matrix.setNclose(nclose);
-  std::vector iv = iclose;
-  matrix.setIclose(iv);
+  matrix.setIclose(iclose);
   matrix.setJclose(jclose);
   
   matrix.setNclose_raw(nclose_raw);
-  std::vector ivr = iclose_raw;
-  matrix.setIclose_raw(ivr);
+  matrix.setIclose_raw(iclose_raw);
   matrix.setJclose_raw(jclose_raw);
   
   matrix.setDist(dist);
