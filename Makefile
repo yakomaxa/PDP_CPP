@@ -1,5 +1,4 @@
-
-1;95;0cCXX	= g++-12
+CXX	= g++-12
 CXXFLAGS  =  -std=c++20 -Wall -I./gemmi/include/ -O3 -ffast-math -Ofast -march=native -funroll-loops -flto -Wno-unused-result -Wsign-compare -Wunreachable-code -Wall 
 LIBS    = -lm -lz 
 VPATH   = ./src/
