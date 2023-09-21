@@ -85,7 +85,7 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
 };
 
 
-gemmi::Structure Structure::writePDB(){
+void Structure::writePDB(){
   gemmi::Structure st_tmp = this->structure;
 
   /*
@@ -128,7 +128,6 @@ gemmi::Structure Structure::writePDB(){
   groups.group_pdb = true;
   // update the mmcif by Structure object
   gemmi::update_mmcif_block(st_tmp, doc.blocks[0], groups);
-
   //std::string file_q_str(input.file_q);
   gemmi::cif::write_cif_to_stream(os1, doc);
   
