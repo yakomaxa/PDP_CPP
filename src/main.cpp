@@ -165,7 +165,7 @@ int main(int argc, char *argv[]){
   printf("FINAL!!\n");
   listdomains(domains);
   listdomains(domains,"removed.pml");
-  //  s.writePDB();
+  s.writePDB();
   
   return 0;
 }
