@@ -63,6 +63,48 @@ static void listdomains(std::vector<Domain>& domains, const std::string& filenam
   output_file.close();
 };
 
+static void setsegmentinfo(std::vector<Domain>& domains,
+			   std::vector<Atom>& ca) {
+  for (int i= 0 ; i < (int)domains.size(); i++){
+    for (int j = 0 ; j < domains[i].getNseg();j++){
+      domains[i].getSegmentAtPos(j).setFromOrg(ca[domains[i].getSegmentAtPos(j).getFrom()].getIndexOrg());
+      domains[i].getSegmentAtPos(j).setToOrg(ca[domains[i].getSegmentAtPos(j).getTo()].getIndexOrg());
+      domains[i].getSegmentAtPos(j).setChain(ca[domains[i].getSegmentAtPos(j).getTo()].getChain());
+      domains[i].getSegmentAtPos(j).setChainId(ca[domains[i].getSegmentAtPos(j).getTo()].getChainId());
+    }
+  }
+}
+
+static void mergesegments(std::vector<Domain>& domains){
+
+    for(int j=0;j<(int)domains.size();j++) {
+    std::sort(domains[j].getSegments().begin(),
+    	      domains[j].getSegments().end(),SegmentComparator());
+    for (int i=0;i<domains[j].getNseg()-1;i++){
+      std::cout << domains[j].getSegmentAtPos(i) << std::endl;
+      
+      if((domains[j].getSegmentAtPos(i).getToOrg())==(domains[j].getSegmentAtPos(i+1).getFromOrg()-1)
+	 && (domains[j].getSegmentAtPos(i).getChain()==(domains[j].getSegmentAtPos(i+1).getChain()))){
+	
+       	domains[j].getSegmentAtPos(i).setToOrg(domains[j].getSegmentAtPos(i+1).getToOrg());
+	domains[j].getSegmentAtPos(i).setTo(domains[j].getSegmentAtPos(i+1).getTo());
+	domains[j].addNseg(-1);
+	printf("NSEG=%i\n",domains[j].getNseg());
+	for(int l=i+1;l<domains[j].getNseg();l++){
+	  domains[j].getSegmentAtPos(l).setToOrg(domains[j].getSegmentAtPos(l+1).getToOrg());
+	  domains[j].getSegmentAtPos(l).setTo(domains[j].getSegmentAtPos(l+1).getTo());	  
+	  domains[j].getSegmentAtPos(l).setFromOrg(domains[j].getSegmentAtPos(l+1).getFromOrg());
+	  domains[j].getSegmentAtPos(l).setFrom(domains[j].getSegmentAtPos(l+1).getFrom());
+	  domains[j].getSegmentAtPos(l).setChain(domains[j].getSegmentAtPos(l+1).getChain());
+	}
+	printf("%i\n",i);
+	i--;
+      }
+    }
+  }
+
+}
+
 int main(int argc, char *argv[]){
   std::string filename=argv[1];
   printf("---------Reading structure\n");
@@ -110,44 +152,10 @@ int main(int argc, char *argv[]){
   domains = ClusterDomains::cluster(domains, pdpMatrix);
   printf("---------Clustering domains Done\n");  
 
-  for (int i= 0 ; i < (int)domains.size(); i++){
-    for (int j = 0 ; j < domains[i].getNseg();j++){
-      domains[i].getSegmentAtPos(j).setFromOrg(ca[domains[i].getSegmentAtPos(j).getFrom()].getIndexOrg());
-      domains[i].getSegmentAtPos(j).setToOrg(ca[domains[i].getSegmentAtPos(j).getTo()].getIndexOrg());
-      domains[i].getSegmentAtPos(j).setChain(ca[domains[i].getSegmentAtPos(j).getTo()].getChain());
-      domains[i].getSegmentAtPos(j).setChainId(ca[domains[i].getSegmentAtPos(j).getTo()].getChainId());      
-    }
-  }
 
+  setsegmentinfo(domains,ca);
   listdomains(domains);
-
-  for(int j=0;j<(int)domains.size();j++) {
-    std::sort(domains[j].getSegments().begin(),
-    	      domains[j].getSegments().end(),SegmentComparator());
-    for (int i=0;i<domains[j].getNseg()-1;i++){
-      std::cout << domains[j].getSegmentAtPos(i) << std::endl;
-      
-      if((domains[j].getSegmentAtPos(i).getToOrg())==(domains[j].getSegmentAtPos(i+1).getFromOrg()-1)
-	 && (domains[j].getSegmentAtPos(i).getChain()==(domains[j].getSegmentAtPos(i+1).getChain()))){
-	
-       	domains[j].getSegmentAtPos(i).setToOrg(domains[j].getSegmentAtPos(i+1).getToOrg());
-	domains[j].getSegmentAtPos(i).setTo(domains[j].getSegmentAtPos(i+1).getTo());
-	domains[j].addNseg(-1);
-	printf("NSEG=%i\n",domains[j].getNseg());
-	for(int l=i+1;l<domains[j].getNseg();l++){
-	  domains[j].getSegmentAtPos(l).setToOrg(domains[j].getSegmentAtPos(l+1).getToOrg());
-	  domains[j].getSegmentAtPos(l).setTo(domains[j].getSegmentAtPos(l+1).getTo());	  
-	  domains[j].getSegmentAtPos(l).setFromOrg(domains[j].getSegmentAtPos(l+1).getFromOrg());
-	  domains[j].getSegmentAtPos(l).setFrom(domains[j].getSegmentAtPos(l+1).getFrom());
-	  domains[j].getSegmentAtPos(l).setChain(domains[j].getSegmentAtPos(l+1).getChain());
-	}
-	printf("%i\n",i);
-	i--;
-      }
-    }
-  }
-
-  
+  mergesegments(domains);
   listdomains(domains);
   listdomains(domains,"naive.pml");
   // Remove short segments
@@ -157,6 +165,7 @@ int main(int argc, char *argv[]){
   printf("FINAL!!\n");
   listdomains(domains);
   listdomains(domains,"removed.pml");
+  s.writePDB();
   
   return 0;
 }

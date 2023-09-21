@@ -4,9 +4,14 @@
 //
 //  Created by Koya Sakuma on 2023/03/23.
 //
-#include <iostream>
 #include "Structure.hpp"
 #include "PDPParameters.hpp"
+
+#include <gemmi/to_cif.hpp>
+#define GEMMI_WRITE_IMPLEMENTATION
+#include <gemmi/to_mmcif.hpp>
+#define GEMMI_READ_CIF_IMPLEMENTATION
+#include <gemmi/read_cif.hpp>
 
 gemmi::Structure openCoordinatefile(const std::string & infilename){
   gemmi::MaybeGzipped inputfile(infilename);
@@ -78,3 +83,53 @@ std::vector<Atom> Structure::getRepresentativeAtomArray(){
   PDPParameters::maxIndex = maxindex;
   return Atoms;
 };
+
+
+gemmi::Structure Structure::writePDB(){
+  gemmi::Structure st_tmp = this->structure;
+
+  /*
+  long long iatom = 0;
+  gemmi::Structure st_tmp = st;
+  for (gemmi::Model& model : st_tmp.models){
+    for (gemmi::Chain& chain : model.chains) {
+       for (gemmi::Residue& residue : chain.residues) {           
+	 for (gemmi::Atom &atom : residue.atoms) {
+	     iatom = iatom + 1;
+	     atom.pos.x = (double)allatm[iatom].coord[1] ;
+	     atom.pos.y = (double)allatm[iatom].coord[2] ;
+	     atom.pos.z = (double)allatm[iatom].coord[3] ;	     
+	 }
+       }
+    }
+  }
+  */
+  
+  /*std::string mmcifout = input.mmcifout;
+  std::string imodel_str=std::to_string(imodel);
+  if (input.dump_topN <= 0){
+    mmcifout = mmcifout+"_MODEL"+imodel_str+".cif";
+  }else{
+    std::ostringstream ss;
+    ss << std::setw(3) << std::setfill('0') << isub_out+1;
+    std::string isub_out_str(ss.str());
+    mmcifout = mmcifout+"_ranked"+isub_out_str+"_MODEL"+imodel_str+".cif";
+  }
+  std::ofstream os1(mmcifout);
+  */
+  std::string mmcifout = "testoutput.cif";
+  std::ofstream os1(mmcifout);
+  //generate cif document from Structure object
+  gemmi::cif::Document doc = gemmi::make_mmcif_document(st_tmp);
+  //object group
+  gemmi::MmcifOutputGroups groups(true);
+  groups.atoms = true;
+  //use group_pdb i.e. ATOM and HETATM
+  groups.group_pdb = true;
+  // update the mmcif by Structure object
+  gemmi::update_mmcif_block(st_tmp, doc.blocks[0], groups);
+
+  //std::string file_q_str(input.file_q);
+  gemmi::cif::write_cif_to_stream(os1, doc);
+  
+}

@@ -81,3 +81,4 @@ void Domain::pushbackContacted(int i){
 void Domain::removeContacted(int i){
   std::erase(contacted,i);
 }
+
