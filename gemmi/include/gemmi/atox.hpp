@@ -15,6 +15,7 @@
 
 #include <stdexcept>  // for invalid_argument
 #include <string>
+#include <cstdint>
 
 namespace gemmi {
 
