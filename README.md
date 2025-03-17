@@ -19,5 +19,6 @@ pdppymol.py, a pymol extention to call PDP, is under MIT-license.
 
 
 TODO
-
-Import author information from original java code for appropriate parts
+(0) Priority: Let the binary to dump parsed structure files
+(1) Import author information from original java code for appropriate parts
+(2) Make systematic check routine
