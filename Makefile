@@ -5,7 +5,7 @@ VPATH   = ./src/
 SRC     = $(shell ls $(VPATH)/*.cpp)
 HEADERS = $(shell ls $(VPATH)/*.hpp) 
 OBJS    = $(SRC:.cpp=.o)
-TARGET  = pdp_2023
+TARGET  = pdp++
 
 $(TARGET): $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
