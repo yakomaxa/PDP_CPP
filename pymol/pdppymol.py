@@ -13,8 +13,8 @@ def pdp(target, option=""):
         print("Temporary directory =" + dname)
         # make sure you have pdp_2023 in PATH
         # directly giving 'execute' full path below is good alternative
-        # For example : execute = "/usr/bin/pdp_2023"
-        execute = "pdp_2023"
+        # For example : execute = "/usr/bin/pdp++"
+        execute = "pdp++"
         tmptarget = dname + "/target.cif"
 #        pml = dname + "./naive.pml"
         pml = "./naive.pml"
