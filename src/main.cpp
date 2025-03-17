@@ -149,14 +149,16 @@ int main(int argc, char *argv[]){
 
   
   listdomains(domains);
-  listdomains(domains,"naive.pml");
+  listdomains(domains,"naive.pml"); //should allow user to specify file name
   // Remove short segments
   printf("---------Cleanup \n");  
   ShortSegmentRemover::cleanup(domains);
   printf("---------Cleanup Done\n");  
   printf("FINAL!!\n");
   listdomains(domains);
-  listdomains(domains,"removed.pml");
+  listdomains(domains,"removed.pml"); //should allow user to specify file name
+
+  // PDB file exporter should be here
   
   return 0;
 }
