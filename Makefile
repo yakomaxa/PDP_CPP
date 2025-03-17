@@ -1,5 +1,6 @@
 CXX	= g++-13
 CXXFLAGS  =  -std=c++20 -Wall -I./gemmi/include/ -O3 -Wl,-ld_classic
+# If you want to complile on linux, consider removing -Wl,-ld_classic; it's for MacOS things.
 LIBS    = -lm -lz 
 VPATH   = ./src/
 SRC     = $(shell ls $(VPATH)/*.cpp)
